@@ -28,7 +28,10 @@
 
     h1 { margin: 0 0 8px; font-size: clamp(1.5rem, 3vw, 2rem); }
     .intro { margin: 0 0 24px; color: #607482; }
-    .table-wrap { overflow-x: auto; }
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
     table {
       width: 100%;
@@ -74,6 +77,8 @@
     .row-total { white-space: nowrap; }
     .sr-only {
       position: absolute;
+      top: 0;
+      left: 0;
       width: 1px;
       height: 1px;
       padding: 0;
@@ -95,6 +100,37 @@
 
     .save-status { margin: 0; color: #526977; font-size: 0.86rem; }
     .save-status.error { color: #a32720; font-weight: 650; }
+    .file-name {
+      margin: 0 0 -8px;
+      color: #526977;
+      font-size: 0.86rem;
+      overflow-wrap: anywhere;
+    }
+    .file-name span { color: #172b3a; font-weight: 650; }
+
+    dialog {
+      width: min(420px, calc(100% - 32px));
+      padding: 22px;
+      border: 1px solid #dce5eb;
+      border-radius: 12px;
+      color: #172b3a;
+      box-shadow: 0 12px 32px rgb(23 43 58 / 20%);
+    }
+
+    dialog::backdrop { background: rgb(23 43 58 / 40%); }
+    dialog h2 { margin: 0 0 14px; font-size: 1.15rem; }
+    dialog label { display: grid; gap: 6px; color: #526977; font-size: 0.9rem; }
+    dialog input {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid #cedae1;
+      border-radius: 7px;
+      color: #172b3a;
+      font: inherit;
+    }
+    dialog input:focus { outline: 3px solid rgb(25 129 107 / 18%); border-color: #19816b; }
+    .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+    .dialog-actions .secondary { color: #172b3a; background: #eaf0f3; }
 
     button {
       padding: 9px 14px;
@@ -214,18 +250,75 @@
       body { padding: 12px; }
       main { padding: 18px 14px; }
     }
+
+    @media (orientation: landscape) and (max-height: 500px) and (max-width: 950px) {
+      body { padding: 6px; }
+      main { padding: 12px; border-radius: 10px; }
+
+      .file-name { margin-bottom: 6px; font-size: 0.75rem; }
+      .data-actions { gap: 6px; margin: 0 0 10px; }
+      .data-actions button { padding: 7px 10px; }
+      .save-status { font-size: 0.75rem; }
+
+      table { min-width: 880px; font-size: 0.8rem; }
+      th, td { padding: 6px 5px; }
+      th { font-size: 0.68rem; }
+      td input { min-width: 54px; padding: 5px 6px; }
+      td .food-input { min-width: 100px; }
+
+      .actions { margin-top: 10px; }
+      .actions button { padding: 7px 10px; }
+      .summary {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .summary-card { padding: 8px 10px; }
+      .summary-card strong { margin-bottom: 3px; font-size: 0.82rem; }
+      .summary-card output { font-size: 0.92rem; }
+      .summary-card output small { margin-top: 3px; font-size: 0.66rem; }
+
+      .targets {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+        padding: 10px;
+      }
+      .targets label { gap: 4px; font-size: 0.76rem; }
+      .targets input { padding: 6px; }
+
+      .meal-planner { margin-top: 16px; padding-top: 12px; }
+      .meal-planner h2 { font-size: 1.05rem; }
+      .meal-table { min-width: 720px; margin-top: 8px; }
+      .meal-table input { width: 68px; min-width: 54px; padding: 5px; }
+      .meal-table .meal-food-name { min-width: 100px; }
+      .meal-status { margin-top: 8px; font-size: 0.78rem; }
+    }
   </style>
 </head>
 <body>
   <main>
     <!-- <h1>Food Exchange Calculator</h1> -->
     <!-- <p class="intro">Edit the exchanges or nutrition values to update the daily totals.</p> -->
+    <p class="file-name">Current file: <span id="current-file-name">Untitled plan</span></p>
     <div class="data-actions" aria-label="Save or transfer your data">
       <button id="export-data" type="button">Save as</button>
       <button id="import-data" type="button">Open file</button>
       <input id="import-file" class="sr-only" type="file" accept="application/json,.json" aria-label="Choose a saved food exchange JSON file">
       <p id="save-status" class="save-status" role="status" aria-live="polite"></p>
     </div>
+
+    <dialog id="save-dialog" aria-labelledby="save-dialog-title">
+      <form id="save-form">
+        <h2 id="save-dialog-title">Save backup</h2>
+        <label for="save-filename">Filename</label>
+        <input id="save-filename" type="text" value="food-exchange-plan.json" required autocomplete="off">
+        <div class="dialog-actions">
+          <button class="secondary" id="cancel-save" type="button">Cancel</button>
+          <button type="submit">Save</button>
+        </div>
+      </form>
+    </dialog>
 
     <div class="table-wrap">
       <table aria-label="Editable food exchange nutrition table">
@@ -307,7 +400,7 @@
     const mealNames = ["Breakfast", "AM Snack", "Lunch", "PM Snack", "Dinner"];
     const exampleMealPlan = {
       Vegetables: [1, 0, 0, 0, 1],
-      Fruits: [1, 0, 1, 1, 1],
+      Fruits: [1, 0, 1, 0, 1],
       Milk: [1, 0, 0, 0, 0],
       Rice: [3, 0, 3, 0, 2.5],
       Meat: [2, 0, 2, 0, 1],
@@ -763,18 +856,41 @@
     //   saveState();
     // });
 
+    const saveDialog = document.querySelector("#save-dialog");
+    const filenameInput = document.querySelector("#save-filename");
     document.querySelector("#export-data").addEventListener("click", () => {
+      const currentFilename = document.querySelector("#current-file-name").textContent;
+      filenameInput.value = currentFilename === "Untitled plan" ? "food-exchange-plan.json" : currentFilename;
+      saveDialog.showModal();
+      filenameInput.focus();
+      filenameInput.select();
+    });
+
+    document.querySelector("#cancel-save").addEventListener("click", () => saveDialog.close());
+
+    document.querySelector("#save-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const filename = filenameInput.value.trim();
+      if (!filename || /[<>:"/\\|?*\u0000-\u001f]/.test(filename) || /[. ]$/.test(filename)) {
+        setSaveStatus("Enter a valid filename without characters such as / \\ : * ? \" < > |.", true);
+        filenameInput.focus();
+        return;
+      }
+
+      const downloadFilename = filename.toLowerCase().endsWith(".json") ? filename : `${filename}.json`;
       try {
         const backup = new Blob([JSON.stringify(getSavedState(), null, 2)], { type: "application/json" });
         const url = URL.createObjectURL(backup);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "food-exchange-plan.json";
+        link.download = downloadFilename;
         document.body.append(link);
         link.click();
         link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
-        setSaveStatus("Backup exported as food-exchange-plan.json.");
+        document.querySelector("#current-file-name").textContent = downloadFilename;
+        setSaveStatus(`Backup exported as ${downloadFilename}.`);
+        saveDialog.close();
       } catch (error) {
         setSaveStatus(`Could not export backup: ${error.message}`, true);
       }
@@ -790,6 +906,7 @@
       try {
         const state = validateState(JSON.parse(await file.text()));
         applyState(state);
+        document.querySelector("#current-file-name").textContent = file.name;
         const saved = saveState();
         if (saved) setSaveStatus("Backup imported successfully.");
         else setSaveStatus("Backup imported for this session, but could not be saved in this browser.", true);
