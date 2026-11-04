@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Preview Markdown files and print or export them as PNG or PDF.">
+  <title>Markdown Exporter</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: #172b3a;
+      background: #f3f6f8;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 28px 18px; }
+    main { max-width: 1440px; margin: 0 auto; }
+    a { color: #176f60; }
+
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .topbar a { font-weight: 650; text-decoration: none; }
+    .topbar a:hover { text-decoration: underline; }
+    h1 { margin: 0 0 6px; font-size: clamp(1.6rem, 3vw, 2rem); }
+    .intro { margin: 0; color: #607482; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0;
+      padding: 14px;
+      border: 1px solid #dce5eb;
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    button, .file-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 14px;
+      border: 0;
+      border-radius: 8px;
+      color: #fff;
+      background: #176f60;
+      font: inherit;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    button:hover, .file-button:hover { background: #10584c; }
+    button:focus-visible, .file-button:focus-visible, a:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgb(25 129 107 / 30%);
+      outline-offset: 2px;
+    }
+
+    button.secondary, .file-button.secondary { color: #172b3a; background: #eaf0f3; }
+    button.secondary:hover, .file-button.secondary:hover { background: #dce6eb; }
+    button:disabled { opacity: 0.6; cursor: wait; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    #file-input { display: none; }
+    .status { flex: 1 1 100%; min-height: 1.25em; margin: 0; color: #526977; font-size: 0.88rem; }
+    .status.error { color: #a32720; font-weight: 650; }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .panel {
+      min-width: 0;
+      min-height: min(72vh, 850px);
+      overflow: hidden;
+      border: 1px solid #dce5eb;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgb(23 43 58 / 5%);
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 16px;
+      border-bottom: 1px solid #e5ebef;
+      background: #f9fbfc;
+    }
+
+    .panel-heading h2 { margin: 0; font-size: 0.98rem; }
+    #file-name { overflow: hidden; color: #607482; font-size: 0.82rem; text-overflow: ellipsis; white-space: nowrap; }
+
+    #markdown-input {
+      display: block;
+      width: 100%;
+      min-height: min(72vh, 850px);
+      padding: 20px;
+      resize: vertical;
+      border: 0;
+      color: #172b3a;
+      background: #fff;
+      font: 0.94rem/1.65 "Cascadia Code", Consolas, monospace;
+      tab-size: 2;
+    }
+
+    #markdown-input:focus-visible { outline-offset: -3px; }
+    .drop-active .panel { border-color: #19816b; box-shadow: 0 0 0 3px rgb(25 129 107 / 18%); }
+
+    .preview {
+      min-height: min(72vh, 850px);
+      padding: 34px clamp(20px, 4vw, 52px);
+      overflow-wrap: anywhere;
+      color: #243846;
+      background: #fff;
+      line-height: 1.7;
+    }
+
+    .preview > :first-child { margin-top: 0; }
+    .preview h1, .preview h2, .preview h3, .preview h4, .preview h5, .preview h6 {
+      margin: 1.5em 0 0.55em;
+      color: #172b3a;
+      line-height: 1.25;
+    }
+
+    .preview h1 { padding-bottom: 0.35em; border-bottom: 1px solid #e5ebef; font-size: 2em; }
+    .preview h2 { padding-bottom: 0.3em; border-bottom: 1px solid #e5ebef; font-size: 1.5em; }
+    .preview h3 { font-size: 1.2em; }
+    .preview p, .preview ul, .preview ol, .preview blockquote, .preview pre, .preview table { margin: 0 0 1.1em; }
+    .preview ul, .preview ol { padding-left: 1.8em; }
+    .preview li + li { margin-top: 0.25em; }
+    .preview blockquote {
+      padding: 2px 0 2px 16px;
+      border-left: 4px solid #9acbb9;
+      color: #526977;
+    }
+    .preview code {
+      padding: 0.15em 0.35em;
+      border-radius: 4px;
+      background: #f0f4f6;
+      font: 0.88em "Cascadia Code", Consolas, monospace;
+    }
+    .preview pre {
+      padding: 16px;
+      overflow-x: auto;
+      border-radius: 8px;
+      color: #eaf0f3;
+      background: #172b3a;
+      line-height: 1.55;
+    }
+    .preview pre code { padding: 0; color: inherit; background: transparent; }
+    .preview table { width: 100%; border-collapse: collapse; }
+    .preview th, .preview td { padding: 8px 10px; border: 1px solid #dce5eb; text-align: left; }
+    .preview th { background: #f4f8f7; }
+    .preview img {
+      display: block;
+      max-width: min(100%, 520px);
+      max-height: 360px;
+      height: auto;
+      margin: 1em 0;
+      object-fit: contain;
+    }
+    .preview hr { height: 1px; margin: 1.5em 0; border: 0; background: #dce5eb; }
+
+    @media (max-width: 780px) {
+      body { padding: 18px 12px; }
+      .workspace { grid-template-columns: 1fr; }
+      .panel { min-height: 55vh; }
+      #markdown-input, .preview { min-height: 55vh; }
+    }
+
+    @media print {
+      @page { margin: 18mm; }
+      body { padding: 0; background: #fff; }
+      .topbar, .toolbar, .editor-panel, .panel-heading { display: none !important; }
+      main, .workspace, .preview-panel { display: block; width: 100%; max-width: none; min-height: 0; margin: 0; padding: 0; border: 0; box-shadow: none; }
+      .preview { min-height: 0; padding: 0; overflow: visible; }
+      .preview pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+      .preview img {
+        max-width: 70%;
+        max-height: 140mm;
+        margin: 0.8em 0;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .preview tr, .preview figure { break-inside: avoid; }
+      .preview a { color: inherit; text-decoration: none; }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <div>
+        <h1>Markdown Exporter</h1>
+        <p class="intro">Open or paste a Markdown file, preview it, then print or export it.</p>
+      </div>
+      <a href="index.html">← Food Exchange Calculator</a>
+    </header>
+
+    <div class="toolbar" aria-label="Markdown file and export actions">
+      <label class="file-button" for="file-input">Open .md file</label>
+      <input id="file-input" type="file" accept=".md,.markdown,text/markdown,text/plain,image/*" multiple>
+      <button id="export-png" type="button">Export PNG</button>
+      <button id="print-pdf" type="button">Print / Save PDF</button>
+      <button id="load-sample" class="secondary" type="button">Load sample</button>
+      <p id="status" class="status" role="status" aria-live="polite">Markdown is processed in your browser and is not uploaded. Select a Markdown file with any local images it references.</p>
+    </div>
+
+    <section class="workspace" aria-label="Markdown editor and preview">
+      <section class="panel editor-panel" aria-labelledby="editor-heading">
+        <div class="panel-heading">
+          <h2 id="editor-heading">Markdown</h2>
+          <span id="file-name">Untitled.md</span>
+        </div>
+        <label class="sr-only" for="markdown-input">Markdown source</label>
+        <textarea id="markdown-input" spellcheck="false" aria-describedby="status"></textarea>
+      </section>
+      <section class="panel preview-panel" aria-labelledby="preview-heading">
+        <div class="panel-heading"><h2 id="preview-heading">Preview</h2></div>
+        <article id="preview" class="preview" aria-live="polite"></article>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const sampleMarkdown = `# Your document title
+
+Write or paste Markdown on the left. The preview updates as you type.
+
+## What you can use
+
+- **Bold** and *italic* text
+- Lists, links, and quotes
+- Tables and fenced code blocks
+
+| Item | Details |
+| --- | --- |
+| Export | Save the preview as a PNG |
+| Print | Print it or choose Save as PDF |
+
+> Tip: drop a \`.md\` file anywhere on this page to open it.
+
+\`\`\`js
+const markdown = "Hello, world!";
+\`\`\`
+`;
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const input = document.querySelector("#markdown-input");
+      const preview = document.querySelector("#preview");
+      const fileInput = document.querySelector("#file-input");
+      const fileName = document.querySelector("#file-name");
+      const status = document.querySelector("#status");
+      const pngButton = document.querySelector("#export-png");
+      const printButton = document.querySelector("#print-pdf");
+      let localImages = new Map();
+      let imageUrls = [];
+      let currentName = "Untitled";
+
+      function setStatus(message, isError = false) {
+        status.textContent = message;
+        status.classList.toggle("error", isError);
+      }
+
+      function render() {
+        if (!window.marked || !window.DOMPurify) {
+          setStatus("Markdown tools could not load. Check your internet connection and reload the page.", true);
+          return;
+        }
+
+        const rendered = document.createElement("template");
+        const localImageSources = new Map();
+        rendered.innerHTML = window.marked.parse(input.value);
+        for (const image of rendered.content.querySelectorAll("img")) {
+          const source = image.getAttribute("src") || "";
+          if (!/^(?:[a-z][a-z\d+.-]*:|\/\/|\/)/i.test(source)) {
+            let basename = source.split(/[?#]/, 1)[0].split("/").pop();
+            try {
+              basename = decodeURIComponent(basename);
+            } catch {
+              continue;
+            }
+            const localUrl = localImages.get(basename.toLocaleLowerCase());
+            if (localUrl) {
+              const placeholder = `https://markdown-local.invalid/${encodeURIComponent(basename)}`;
+              image.setAttribute("src", placeholder);
+              localImageSources.set(placeholder, localUrl);
+            }
+          }
+          image.setAttribute("loading", "eager");
+        }
+        const safePreview = document.createElement("template");
+        safePreview.innerHTML = window.DOMPurify.sanitize(rendered.innerHTML);
+        for (const image of safePreview.content.querySelectorAll("img")) {
+          const localUrl = localImageSources.get(image.getAttribute("src"));
+          if (localUrl) image.setAttribute("src", localUrl);
+        }
+        preview.innerHTML = safePreview.innerHTML;
+      }
+
+      function openFiles(files) {
+        const selected = Array.from(files || []);
+        if (!selected.length) return;
+        const markdownFiles = selected.filter(file => /\.(md|markdown)$/i.test(file.name));
+        if (markdownFiles.length !== 1) {
+          setStatus(markdownFiles.length ? "Select just one Markdown file at a time." : "Select a Markdown file and any image files it references together.", true);
+          return;
+        }
+
+        for (const url of imageUrls) URL.revokeObjectURL(url);
+        localImages = new Map();
+        imageUrls = [];
+        for (const file of selected.filter(item => item.type.startsWith("image/"))) {
+          const url = URL.createObjectURL(file);
+          imageUrls.push(url);
+          localImages.set(file.name.toLocaleLowerCase(), url);
+        }
+
+        const file = markdownFiles[0];
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          if (typeof reader.result !== "string") {
+            setStatus("Could not read that file as text.", true);
+            return;
+          }
+          input.value = reader.result;
+          currentName = file.name.replace(/\.(md|markdown)$/i, "") || "Untitled";
+          fileName.textContent = file.name;
+          render();
+          const imageCount = imageUrls.length;
+          setStatus(`Opened ${file.name}${imageCount ? ` with ${imageCount} local image${imageCount === 1 ? "" : "s"}` : ""}. Your files stay in this browser.`);
+        });
+        reader.addEventListener("error", () => setStatus("Could not read that file.", true));
+        reader.readAsText(file);
+      }
+
+      input.value = sampleMarkdown;
+      render();
+      input.addEventListener("input", render);
+
+      fileInput.addEventListener("change", () => {
+        openFiles(fileInput.files);
+        fileInput.value = "";
+      });
+
+      document.querySelector("#load-sample").addEventListener("click", () => {
+        input.value = sampleMarkdown;
+        currentName = "Markdown-export";
+        fileName.textContent = "Sample";
+        render();
+        setStatus("Sample Markdown loaded.");
+      });
+
+      printButton.addEventListener("click", async () => {
+        if (!window.marked || !window.DOMPurify) {
+          setStatus("Markdown tools could not load, so the preview cannot be printed.", true);
+          return;
+        }
+        render();
+        printButton.disabled = true;
+        try {
+          setStatus("Waiting for preview images to load before printing…");
+          const images = Array.from(preview.querySelectorAll("img"));
+          const loaded = await Promise.all(images.map(async image => {
+            try {
+              await image.decode();
+              return true;
+            } catch {
+              return false;
+            }
+          }));
+          const missingCount = loaded.filter(isLoaded => !isLoaded).length;
+          if (missingCount) {
+            setStatus(`${missingCount} image${missingCount === 1 ? "" : "s"} could not be loaded. Check the image URL or select the local image files with the Markdown file.`, true);
+          } else {
+            setStatus("Images are ready. In the print dialog, choose Save as PDF.");
+          }
+          window.print();
+        } finally {
+          printButton.disabled = false;
+        }
+      });
+
+      pngButton.addEventListener("click", async () => {
+        if (!window.html2canvas) {
+          setStatus("PNG export could not load. Check your internet connection and reload the page.", true);
+          return;
+        }
+
+        pngButton.disabled = true;
+        setStatus("Creating PNG…");
+        try {
+          await document.fonts.ready;
+          const canvas = await window.html2canvas(preview, {
+            backgroundColor: "#ffffff",
+            scale: Math.min(window.devicePixelRatio || 1, 2),
+            useCORS: true
+          });
+          const link = document.createElement("a");
+          link.download = `${currentName || "markdown"}.png`;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+          setStatus("PNG exported.");
+        } catch (error) {
+          console.error("PNG export failed:", error);
+          setStatus("Could not create the PNG. The document may contain an image that cannot be exported.", true);
+        } finally {
+          pngButton.disabled = false;
+        }
+      });
+
+      for (const eventName of ["dragenter", "dragover"]) {
+        document.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          document.body.classList.add("drop-active");
+        });
+      }
+
+      for (const eventName of ["dragleave", "drop"]) {
+        document.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          if (eventName === "drop") {
+            const files = event.dataTransfer && event.dataTransfer.files;
+            if (files && files.length) openFiles(files);
+          }
+          document.body.classList.remove("drop-active");
+        });
+      }
+    });
+  </script>
+</body>
+</html>

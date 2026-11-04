@@ -98,6 +98,15 @@
       margin: 18px 0;
     }
 
+    .tool-link {
+      align-self: center;
+      color: #176f60;
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .tool-link:hover { text-decoration: underline; }
+
     #export-report { display: none; }
 
     .save-status { margin: 0; color: #526977; font-size: 0.86rem; }
@@ -343,6 +352,7 @@
     <!-- <p class="intro">Edit the exchanges or nutrition values to update the daily totals.</p> -->
     <p class="file-name">Current file: <span id="current-file-name">Untitled plan</span></p>
     <div class="data-actions" aria-label="Save or transfer your data">
+      <a class="tool-link" href="markdown.html">Markdown exporter</a>
       <button id="export-data" type="button">Save as</button>
       <button id="import-data" type="button">Open file</button>
       <button id="export-png" type="button">Export PNG</button>
