@@ -437,6 +437,10 @@
       return numberFormat.format(value);
     }
 
+    function setNumericInputValue(input, value) {
+      input.value = value === 0 ? "" : value;
+    }
+
     function getSavedState() {
       return {
         version: 1,
@@ -508,10 +512,10 @@
     function applyState(state) {
       foods.splice(0, foods.length, ...state.foods);
       for (const [field, value] of Object.entries(state.targets)) {
-        document.querySelector(`[data-target="${field}"]`).value = value;
+        setNumericInputValue(document.querySelector(`[data-target="${field}"]`), value);
       }
       for (const [field, value] of Object.entries(state.tolerances)) {
-        document.querySelector(`[data-tolerance="${field}"]`).value = value;
+        setNumericInputValue(document.querySelector(`[data-tolerance="${field}"]`), value);
       }
       renderMeals();
       renderRows();
@@ -544,7 +548,7 @@
         input.type = "number";
         input.min = "0";
         input.step = "any";
-        input.value = food[field];
+        setNumericInputValue(input, food[field]);
       }
       return input;
     }
@@ -626,7 +630,7 @@
           input.type = "number";
           input.min = "0";
           input.step = "any";
-          input.value = food.mealValues[mealIndex];
+          setNumericInputValue(input, food.mealValues[mealIndex]);
           input.dataset.foodIndex = foodIndex;
           input.dataset.mealIndex = mealIndex;
           input.setAttribute("aria-label", `${food.name} exchanges at ${mealName}`);
@@ -831,6 +835,9 @@
     });
 
     document.querySelector(".targets").addEventListener("input", () => {
+      document.querySelectorAll(".targets input").forEach((input) => {
+        if (input.value !== "" && Number(input.value) === 0) input.value = "";
+      });
       updateTotals();
       saveState();
     });
@@ -843,7 +850,7 @@
 
       const value = Math.max(0, Number(input.value) || 0);
       foods[foodIndex].mealValues[mealIndex] = value;
-      input.value = value;
+      setNumericInputValue(input, value);
       updateMealPlan();
       saveState();
     });
