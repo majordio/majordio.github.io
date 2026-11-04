@@ -98,6 +98,8 @@
       margin: 18px 0;
     }
 
+    #export-report { display: none; }
+
     .save-status { margin: 0; color: #526977; font-size: 0.86rem; }
     .save-status.error { color: #a32720; font-weight: 650; }
     .file-name {
@@ -294,6 +296,45 @@
       .meal-table .meal-food-name { min-width: 100px; }
       .meal-status { margin-top: 8px; font-size: 0.78rem; }
     }
+
+    @media print {
+      @page { size: landscape; margin: 10mm; }
+
+      body { padding: 0; background: #fff; }
+      body * { visibility: hidden !important; }
+      main { max-width: none; margin: 0; padding: 0; border: 0; box-shadow: none; }
+      #export-report,
+      #export-report * { visibility: visible !important; }
+      #export-report {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block !important;
+        width: 100%;
+        color: #172b3a;
+        background: #fff;
+      }
+      #export-report h1 { margin: 0 0 4px; font-size: 20pt; }
+      #export-report h2 { margin: 12px 0 5px; font-size: 12pt; }
+      #export-report p { margin: 0 0 8px; font-size: 8pt; }
+      #export-report .report-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin: 10px 0;
+      }
+      #export-report .report-card { padding: 7px; border: 1px solid #dce5eb; border-radius: 5px; }
+      #export-report .report-card strong,
+      #export-report .report-card span { display: block; }
+      #export-report .report-card strong { margin-bottom: 3px; font-size: 9pt; }
+      #export-report .report-card span { font-size: 7pt; }
+      #export-report table { width: 100%; min-width: 0; table-layout: fixed; font-size: 6.5pt; }
+      #export-report th,
+      #export-report td { padding: 3px; overflow-wrap: anywhere; }
+      #export-report th { font-size: 6pt; }
+      #export-report tr { break-inside: avoid; }
+      #export-report .report-section { break-inside: avoid; }
+    }
   </style>
 </head>
 <body>
@@ -304,6 +345,8 @@
     <div class="data-actions" aria-label="Save or transfer your data">
       <button id="export-data" type="button">Save as</button>
       <button id="import-data" type="button">Open file</button>
+      <button id="export-png" type="button">Export PNG</button>
+      <button id="export-pdf" type="button">Export PDF</button>
       <input id="import-file" class="sr-only" type="file" accept="application/json,.json" aria-label="Choose a saved food exchange JSON file">
       <p id="save-status" class="save-status" role="status" aria-live="polite"></p>
     </div>
@@ -393,6 +436,8 @@
       </div> -->
     </section>
 
+    <section id="export-report" aria-labelledby="export-report-title" aria-hidden="true"></section>
+
     <!-- <p class="note">Starting values are transcribed from the photo. Adjust each daily target and its allowed ± tolerance; totals outside the range are highlighted red.</p> -->
   </main>
 
@@ -435,6 +480,19 @@
 
     function format(value) {
       return numberFormat.format(value);
+    }
+
+    function formatExportValue(value) {
+      return format(value);
+    }
+
+    function formatExportUnit(value, unit) {
+      return `${format(value)} ${unit}`;
+    }
+
+    function getMetricExportDetails(metric) {
+      const sign = metric.difference > 0 ? "+" : "";
+      return `${format(metric.actual)} ${metric.unit} / ${format(metric.target)} target (${sign}${format(metric.difference)}); tolerance ±${format(metric.tolerance)} ${metric.unit}`;
     }
 
     function setNumericInputValue(input, value) {
@@ -795,6 +853,386 @@
       updateMealPlan();
     }
 
+    function getExportReportData() {
+      const totals = getTotals();
+      const mealExchanges = mealNames.map(() => 0);
+      const mealCalories = mealNames.map(() => 0);
+      const reportFoods = foods.map((food) => {
+        const plannedExchanges = food.mealValues.reduce((sum, value) => sum + value, 0);
+        const plannedCalories = food.mealValues.reduce((sum, value) => sum + value * food.calories, 0);
+        food.mealValues.forEach((value, index) => {
+          mealExchanges[index] += value;
+          mealCalories[index] += value * food.calories;
+        });
+        return {
+          ...food,
+          carbsPerDay: food.exchanges * food.carbs,
+          proteinPerDay: food.exchanges * food.protein,
+          fatPerDay: food.exchanges * food.fat,
+          caloriesPerDay: food.exchanges * food.calories,
+          plannedExchanges,
+          plannedCalories
+        };
+      });
+      const metrics = [
+        { label: "Calories", field: "calories", unit: "kcal" },
+        { label: "Carbohydrates", field: "carbs", unit: "g" },
+        { label: "Protein", field: "protein", unit: "g" },
+        { label: "Fat", field: "fat", unit: "g" }
+      ].map(({ label, field, unit }) => {
+        const target = targetValue(field);
+        const tolerance = toleranceValue(field);
+        const actual = totals[field];
+        return {
+          label,
+          unit,
+          actual,
+          target,
+          tolerance,
+          difference: actual - target,
+          withinTolerance: Math.abs(actual - target) <= tolerance
+        };
+      });
+      return {
+        fileName: document.querySelector("#current-file-name").textContent,
+        createdAt: new Date().toLocaleString(),
+        foods: reportFoods,
+        totals,
+        metrics,
+        mealExchanges,
+        mealCalories,
+        plannedExchanges: mealExchanges.reduce((sum, value) => sum + value, 0),
+        plannedCalories: mealCalories.reduce((sum, value) => sum + value, 0)
+      };
+    }
+
+    function appendReportTable(container, title, headers, rows, footerRows = []) {
+      const section = document.createElement("section");
+      section.className = "report-section";
+      const heading = document.createElement("h2");
+      heading.textContent = title;
+      section.append(heading);
+
+      const table = document.createElement("table");
+      const head = document.createElement("thead");
+      const headerRow = document.createElement("tr");
+      headers.forEach((text) => {
+        const cell = document.createElement("th");
+        cell.scope = "col";
+        cell.textContent = text;
+        headerRow.append(cell);
+      });
+      head.append(headerRow);
+      table.append(head);
+
+      const bodyRows = document.createElement("tbody");
+      rows.forEach((values) => {
+        const row = document.createElement("tr");
+        values.forEach((text) => {
+          const cell = document.createElement("td");
+          cell.textContent = text;
+          row.append(cell);
+        });
+        bodyRows.append(row);
+      });
+      table.append(bodyRows);
+
+      if (footerRows.length) {
+        const foot = document.createElement("tfoot");
+        footerRows.forEach((values) => {
+          const row = document.createElement("tr");
+          values.forEach((text) => {
+            const cell = document.createElement("td");
+            cell.textContent = text;
+            row.append(cell);
+          });
+          foot.append(row);
+        });
+        table.append(foot);
+      }
+
+      section.append(table);
+      container.append(section);
+    }
+
+    function buildExportReport(data) {
+      const report = document.querySelector("#export-report");
+      report.replaceChildren();
+      const title = document.createElement("h1");
+      title.id = "export-report-title";
+      title.textContent = "Food Exchange Result";
+      report.append(title);
+      const details = document.createElement("p");
+      details.textContent = `${data.fileName} · ${data.createdAt}`;
+      report.append(details);
+
+      const summary = document.createElement("div");
+      summary.className = "report-summary";
+      data.metrics.forEach((metric) => {
+        const card = document.createElement("div");
+        card.className = "report-card";
+        const label = document.createElement("strong");
+        label.textContent = metric.label;
+        const value = document.createElement("span");
+        value.textContent = getMetricExportDetails(metric);
+        const status = document.createElement("span");
+        status.textContent = metric.withinTolerance ? "Within tolerance" : "Outside tolerance";
+        card.append(label, value, status);
+        summary.append(card);
+      });
+      report.append(summary);
+
+      appendReportTable(
+        report,
+        "Daily food-group breakdown",
+        ["Food group", "Exchanges", "Carbs / exchange (g)", "Carbs / day (g)", "Protein / exchange (g)", "Protein / day (g)", "Fat / exchange (g)", "Fat / day (g)", "Calories / exchange", "Calories / day"],
+        data.foods.map((food) => [
+          food.name,
+          formatExportValue(food.exchanges),
+          formatExportValue(food.carbs),
+          formatExportValue(food.carbsPerDay),
+          formatExportValue(food.protein),
+          formatExportValue(food.proteinPerDay),
+          formatExportValue(food.fat),
+          formatExportValue(food.fatPerDay),
+          formatExportValue(food.calories),
+          formatExportValue(food.caloriesPerDay)
+        ]),
+        [[
+          "Daily total", "", "",
+          formatExportUnit(data.totals.carbs, "g"), "",
+          formatExportUnit(data.totals.protein, "g"), "",
+          formatExportUnit(data.totals.fat, "g"), "",
+          formatExportUnit(data.totals.calories, "kcal")
+        ]]
+      );
+
+      appendReportTable(
+        report,
+        "Meal plan",
+        ["Food group", ...mealNames, "Exchanges / day", "Calories / day"],
+        data.foods.map((food) => [
+          food.name,
+          ...food.mealValues.map(formatExportValue),
+          formatExportValue(food.plannedExchanges),
+          formatExportUnit(food.plannedCalories, "kcal")
+        ]),
+        [
+          ["Meal exchanges", ...data.mealExchanges.map(formatExportValue), formatExportValue(data.plannedExchanges), ""],
+          ["Meal calories", ...data.mealCalories.map((value) => formatExportUnit(value, "kcal")), "", formatExportUnit(data.plannedCalories, "kcal")]
+        ]
+      );
+    }
+
+    function wrapCanvasText(context, text, maxWidth) {
+      const lines = [];
+      let line = "";
+      String(text).split(/\s+/).forEach((word) => {
+        if (context.measureText(word).width > maxWidth) {
+          if (line) {
+            lines.push(line);
+            line = "";
+          }
+          let part = "";
+          for (const character of word) {
+            if (part && context.measureText(part + character).width > maxWidth) {
+              lines.push(part);
+              part = character;
+            } else {
+              part += character;
+            }
+          }
+          line = part;
+          return;
+        }
+        const candidate = line ? `${line} ${word}` : word;
+        if (line && context.measureText(candidate).width > maxWidth) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = candidate;
+        }
+      });
+      if (line || lines.length === 0) lines.push(line);
+      return lines;
+    }
+
+    function drawCanvasTable(context, x, y, width, headers, rows, columnWeights, footerRows = []) {
+      const padding = 9;
+      const lineHeight = 17;
+      const totalWeight = columnWeights.reduce((sum, value) => sum + value, 0);
+      const columnWidths = columnWeights.map((value) => width * value / totalWeight);
+
+      function drawRow(values, isHeader, isFooter, rowIndex) {
+        context.font = isHeader ? "600 13px Segoe UI, Arial, sans-serif" : "13px Segoe UI, Arial, sans-serif";
+        const linesByCell = values.map((value, index) =>
+          wrapCanvasText(context, value, columnWidths[index] - padding * 2)
+        );
+        const lineCount = Math.max(1, ...linesByCell.map((lines) => lines.length));
+        const rowHeight = Math.max(34, lineCount * lineHeight + padding * 2);
+
+        context.fillStyle = isHeader ? "#eaf0f3" : (isFooter ? "#f1f6f4" : rowIndex % 2 ? "#f8fafb" : "#ffffff");
+        context.fillRect(x, y, width, rowHeight);
+        context.strokeStyle = "#dce5eb";
+        context.lineWidth = 1;
+        context.strokeRect(x, y, width, rowHeight);
+
+        let cellX = x;
+        linesByCell.forEach((lines, index) => {
+          if (index > 0) {
+            context.beginPath();
+            context.moveTo(cellX, y);
+            context.lineTo(cellX, y + rowHeight);
+            context.stroke();
+          }
+          context.fillStyle = "#172b3a";
+          context.font = isHeader || isFooter ? "600 13px Segoe UI, Arial, sans-serif" : "13px Segoe UI, Arial, sans-serif";
+          lines.forEach((line, lineIndex) => {
+            context.fillText(line, cellX + padding, y + padding + 13 + lineIndex * lineHeight);
+          });
+          cellX += columnWidths[index];
+        });
+        y += rowHeight;
+      }
+
+      drawRow(headers, true, false, 0);
+      rows.forEach((row, index) => drawRow(row, false, false, index));
+      footerRows.forEach((row) => drawRow(row, false, true, 0));
+      return y;
+    }
+
+    function exportReportPng() {
+      try {
+        const data = getExportReportData();
+        const width = 1600;
+        const height = Math.min(30000, 1400 + data.foods.length * 220);
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const context = canvas.getContext("2d");
+        if (!context) throw new Error("This browser could not create an image canvas.");
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, width, height);
+
+        const margin = 56;
+        const contentWidth = width - margin * 2;
+        let y = margin;
+        context.fillStyle = "#172b3a";
+        context.font = "700 32px Segoe UI, Arial, sans-serif";
+        context.fillText("Food Exchange Result", margin, y + 32);
+        y += 52;
+        context.fillStyle = "#526977";
+        context.font = "16px Segoe UI, Arial, sans-serif";
+        context.fillText(`${data.fileName} · ${data.createdAt}`, margin, y + 14);
+        y += 44;
+
+        const cardGap = 14;
+        const cardWidth = (contentWidth - cardGap * 3) / 4;
+        data.metrics.forEach((metric, index) => {
+          const x = margin + index * (cardWidth + cardGap);
+          context.fillStyle = metric.withinTolerance ? "#eff8f4" : "#fff0ef";
+          context.strokeStyle = metric.withinTolerance ? "#9acbb9" : "#e7a5a0";
+          context.lineWidth = 1;
+          context.beginPath();
+          context.roundRect(x, y, cardWidth, 118, 8);
+          context.fill();
+          context.stroke();
+          context.fillStyle = "#526977";
+          context.font = "600 16px Segoe UI, Arial, sans-serif";
+          context.fillText(metric.label, x + 14, y + 25);
+          context.fillStyle = "#172b3a";
+          context.font = "700 17px Segoe UI, Arial, sans-serif";
+          context.font = "13px Segoe UI, Arial, sans-serif";
+          context.fillText(`${format(metric.actual)} ${metric.unit} / ${format(metric.target)}`, x + 14, y + 52);
+          context.font = "13px Segoe UI, Arial, sans-serif";
+          const sign = metric.difference > 0 ? "+" : "";
+          context.fillText(`${sign}${format(metric.difference)} · ±${format(metric.tolerance)} ${metric.unit}`, x + 14, y + 76);
+        });
+        y += 144;
+
+        context.fillStyle = "#172b3a";
+        context.font = "700 20px Segoe UI, Arial, sans-serif";
+        context.fillText("Daily food-group breakdown", margin, y + 20);
+        y += 32;
+        y = drawCanvasTable(
+          context, margin, y, contentWidth,
+          ["Food group", "Exchanges", "Carbs / exchange (g)", "Carbs / day (g)", "Protein / exchange (g)", "Protein / day (g)", "Fat / exchange (g)", "Fat / day (g)", "Calories / exchange", "Calories / day"],
+          data.foods.map((food) => [
+            food.name, formatExportValue(food.exchanges), formatExportValue(food.carbs), formatExportValue(food.carbsPerDay),
+            formatExportValue(food.protein), formatExportValue(food.proteinPerDay), formatExportValue(food.fat), formatExportValue(food.fatPerDay),
+            formatExportValue(food.calories), formatExportValue(food.caloriesPerDay)
+          ]),
+          [1.4, 0.75, 1, 1, 1, 1, 0.75, 0.8, 1.1, 1.1],
+          [[
+            "Daily total", "", "", formatExportUnit(data.totals.carbs, "g"), "",
+            formatExportUnit(data.totals.protein, "g"), "", formatExportUnit(data.totals.fat, "g"), "",
+            formatExportUnit(data.totals.calories, "kcal")
+          ]]
+        );
+        y += 28;
+        context.fillStyle = "#172b3a";
+        context.font = "700 20px Segoe UI, Arial, sans-serif";
+        context.fillText("Meal plan", margin, y + 20);
+        y += 32;
+        y = drawCanvasTable(
+          context, margin, y, contentWidth,
+          ["Food group", ...mealNames, "Exchanges / day", "Calories / day"],
+          data.foods.map((food) => [
+            food.name, ...food.mealValues.map(formatExportValue), formatExportValue(food.plannedExchanges),
+            formatExportUnit(food.plannedCalories, "kcal")
+          ]),
+          [1.15, 1, 1, 1, 1, 1, 1, 1],
+          [
+            ["Meal exchanges", ...data.mealExchanges.map(formatExportValue), formatExportValue(data.plannedExchanges), ""],
+            ["Meal calories", ...data.mealCalories.map((value) => formatExportUnit(value, "kcal")), "", formatExportUnit(data.plannedCalories, "kcal")]
+          ]
+        );
+        y += margin;
+        if (y > height || height >= 30000) {
+          if (y > height) throw new Error("The result is too large to export as one PNG image.");
+        }
+
+        const baseName = data.fileName === "Untitled plan"
+          ? "food-exchange-plan"
+          : data.fileName.replace(/\.json$/i, "").replace(/[<>:"/\\|?*\u0000-\u001f]/g, "-").trim();
+        const downloadName = `${baseName || "food-exchange-plan"}-result.png`;
+        const outputCanvas = document.createElement("canvas");
+        outputCanvas.width = width * 2;
+        outputCanvas.height = Math.ceil(y * 2);
+        const outputContext = outputCanvas.getContext("2d");
+        if (!outputContext) throw new Error("This browser could not prepare the exported image.");
+        outputContext.drawImage(canvas, 0, 0, width, Math.ceil(y), 0, 0, outputCanvas.width, outputCanvas.height);
+        outputCanvas.toBlob((blob) => {
+          if (!blob) {
+            setSaveStatus("Could not export PNG: the browser could not encode the image.", true);
+            return;
+          }
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = downloadName;
+          document.body.append(link);
+          link.click();
+          link.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          setSaveStatus(`Result exported as ${downloadName}.`);
+        }, "image/png");
+      } catch (error) {
+        setSaveStatus(`Could not export PNG: ${error.message}`, true);
+      }
+    }
+
+    document.querySelector("#export-png").addEventListener("click", exportReportPng);
+    document.querySelector("#export-pdf").addEventListener("click", () => {
+      try {
+        buildExportReport(getExportReportData());
+        setSaveStatus("Choose Save as PDF in the print dialog to download your result.");
+        window.print();
+      } catch (error) {
+        setSaveStatus(`Could not prepare PDF report: ${error.message}`, true);
+      }
+    });
+
     body.addEventListener("input", (event) => {
       const input = event.target;
       const index = Number(input.dataset.index);
@@ -835,9 +1273,6 @@
     });
 
     document.querySelector(".targets").addEventListener("input", () => {
-      document.querySelectorAll(".targets input").forEach((input) => {
-        if (input.value !== "" && Number(input.value) === 0) input.value = "";
-      });
       updateTotals();
       saveState();
     });
@@ -850,9 +1285,15 @@
 
       const value = Math.max(0, Number(input.value) || 0);
       foods[foodIndex].mealValues[mealIndex] = value;
-      setNumericInputValue(input, value);
       updateMealPlan();
       saveState();
+    });
+
+    document.querySelector("main").addEventListener("focusout", (event) => {
+      const input = event.target;
+      if (input.matches('input[type="number"]') && input.value !== "" && Number(input.value) === 0) {
+        input.value = "";
+      }
     });
 
     // document.querySelector("#reset-meal-plan").addEventListener("click", () => {
