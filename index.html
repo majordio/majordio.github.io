@@ -1,7 +1,808 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Food Exchange Calculator</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: #172b3a;
+      background: #f3f6f8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; padding: 32px 18px; }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px;
+      background: #fff;
+      border: 1px solid #dce5eb;
+      border-radius: 16px;
+      box-shadow: 0 12px 32px rgb(23 43 58 / 7%);
+    }
+
+    h1 { margin: 0 0 8px; font-size: clamp(1.5rem, 3vw, 2rem); }
+    .intro { margin: 0 0 24px; color: #607482; }
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      min-width: 1080px;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+
+    th, td {
+      padding: 11px 9px;
+      border-bottom: 1px solid #e5ebef;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #526977;
+      background: #f7f9fa;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.035em;
+      text-transform: uppercase;
+    }
+
+    td input {
+      width: 100%;
+      min-width: 64px;
+      padding: 8px 9px;
+      border: 1px solid #cedae1;
+      border-radius: 7px;
+      color: inherit;
+      background: #fff;
+      font: inherit;
+    }
+
+    td input:focus, .targets input:focus {
+      outline: 3px solid rgb(25 129 107 / 18%);
+      border-color: #19816b;
+    }
+
+    td .food-input { min-width: 130px; }
+    .row-total, tfoot { font-weight: 700; }
+    .row-total { white-space: nowrap; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .actions { margin-top: 16px; }
+    .data-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .save-status { margin: 0; color: #526977; font-size: 0.86rem; }
+    .save-status.error { color: #a32720; font-weight: 650; }
+
+    button {
+      padding: 9px 14px;
+      border: 0;
+      border-radius: 8px;
+      color: white;
+      background: #176f60;
+      font: inherit;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    button:hover { background: #10584c; }
+    button.remove {
+      padding: 7px 10px;
+      color: #9c3d3d;
+      background: #fff1f0;
+    }
+
+    button.remove:hover { background: #ffe2df; }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .summary-card {
+      padding: 15px 16px;
+      border: 1px solid #e1e9ed;
+      border-radius: 10px;
+      background: #fbfcfd;
+    }
+
+    .summary-card.within-tolerance {
+      border-color: #9acbb9;
+      background: #eff8f4;
+    }
+
+    .summary-card.outside-tolerance {
+      border-color: #e7a5a0;
+      background: #fff0ef;
+      color: #a32720;
+    }
+
+    .summary-card strong { display: block; margin-bottom: 6px; color: #526977; }
+    .summary-card output { font-size: 1.15rem; font-weight: 750; }
+    .summary-card.outside-tolerance strong { color: #a32720; }
+    .summary-card output small {
+      display: block;
+      margin-top: 5px;
+      font-size: 0.76rem;
+      font-weight: 600;
+    }
+
+    .targets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 10px;
+      background: #f4f8f7;
+    }
+
+    .targets h2 { grid-column: 1 / -1; margin: 0; font-size: 1rem; }
+    .targets label { display: grid; gap: 6px; color: #526977; font-size: 0.86rem; }
+    .targets input {
+      width: 100%;
+      padding: 8px 9px;
+      border: 1px solid #cedae1;
+      border-radius: 7px;
+      color: #172b3a;
+      background: white;
+      font: inherit;
+    }
+
+    .meal-planner {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid #e5ebef;
+    }
+
+    .meal-planner h2 { margin: 0 0 6px; font-size: 1.2rem; }
+    .meal-intro { margin: 0; color: #607482; font-size: 0.9rem; }
+
+    .meal-table {
+      min-width: 760px;
+      margin-top: 16px;
+    }
+
+    .meal-table input {
+      width: 82px;
+      min-width: 64px;
+      padding: 7px 8px;
+      border: 1px solid #cedae1;
+      border-radius: 7px;
+      color: #172b3a;
+      background: white;
+      font: inherit;
+    }
+
+    .meal-table .meal-food-name { min-width: 125px; }
+    .meal-table .meal-sum,
+    .meal-table .meal-calorie-total { white-space: nowrap; font-weight: 700; }
+
+    .meal-table .matches-daily { color: #176f60; }
+    .meal-table .differs-from-daily { color: #a32720; }
+    .meal-status { margin: 12px 0 0; color: #526977; font-size: 0.88rem; }
+    .meal-status.invalid { color: #a32720; font-weight: 700; }
+    .meal-planner .actions { margin-top: 14px; }
+
+    .note { margin: 16px 0 0; color: #71838e; font-size: 0.82rem; }
+
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      main { padding: 18px 14px; }
+    }
+  </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+  <main>
+    <!-- <h1>Food Exchange Calculator</h1> -->
+    <!-- <p class="intro">Edit the exchanges or nutrition values to update the daily totals.</p> -->
+    <div class="data-actions" aria-label="Save or transfer your data">
+      <button id="export-data" type="button">Save as</button>
+      <button id="import-data" type="button">Open file</button>
+      <input id="import-file" class="sr-only" type="file" accept="application/json,.json" aria-label="Choose a saved food exchange JSON file">
+      <p id="save-status" class="save-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="table-wrap">
+      <table aria-label="Editable food exchange nutrition table">
+        <thead>
+          <tr>
+            <th scope="col">Food group</th>
+            <th scope="col">Exchanges</th>
+            <th scope="col">Carbs / exchange (g)</th>
+            <th scope="col">Carbs / day (g)</th>
+            <th scope="col">Protein / exchange (g)</th>
+            <th scope="col">Protein / day (g)</th>
+            <th scope="col">Fat / exchange (g)</th>
+            <th scope="col">Fat / day (g)</th>
+            <th scope="col">Calories / exchange</th>
+            <th scope="col">Calories / day</th>
+            <th scope="col"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody id="food-rows"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">Daily total</td>
+            <td id="total-carbs">0 g</td>
+            <td></td>
+            <td id="total-protein">0 g</td>
+            <td></td>
+            <td id="total-fat">0 g</td>
+            <td></td>
+            <td id="total-calories">0 kcal</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button id="add-row" type="button">Add food group</button>
+    </div>
+
+    <section class="summary" aria-label="Daily totals compared with targets">
+      <div class="summary-card" data-summary="calories"><strong>Calories</strong><output id="calorie-summary" aria-live="polite"></output></div>
+      <div class="summary-card" data-summary="carbs"><strong>Carbohydrates</strong><output id="carb-summary" aria-live="polite"></output></div>
+      <div class="summary-card" data-summary="protein"><strong>Protein</strong><output id="protein-summary" aria-live="polite"></output></div>
+      <div class="summary-card" data-summary="fat"><strong>Fat</strong><output id="fat-summary" aria-live="polite"></output></div>
+    </section>
+
+    <section class="targets" aria-labelledby="targets-heading">
+      <h2 id="targets-heading">Daily targets (editable)</h2>
+      <label>Calories (kcal)<input type="number" min="0" step="any" data-target="calories" value="2026"></label>
+      <label>Calorie tolerance (± kcal)<input type="number" min="0" step="any" data-tolerance="calories" value="50"></label>
+      <label>Carbohydrates (g)<input type="number" min="0" step="any" data-target="carbs" value="264"></label>
+      <label>Carbohydrate tolerance (± g)<input type="number" min="0" step="any" data-tolerance="carbs" value="20"></label>
+      <label>Protein (g)<input type="number" min="0" step="any" data-target="protein" value="66"></label>
+      <label>Protein tolerance (± g)<input type="number" min="0" step="any" data-tolerance="protein" value="20"></label>
+      <label>Fat (g)<input type="number" min="0" step="any" data-target="fat" value="90"></label>
+      <label>Fat tolerance (± g)<input type="number" min="0" step="any" data-tolerance="fat" value="20"></label>
+    </section>
+
+    <section class="meal-planner" aria-labelledby="meal-planner-heading">
+      <h2 id="meal-planner-heading">Meal planner</h2>
+      <!-- <p class="meal-intro">Enter the exchanges for each food group at each meal. Row totals are compared with the daily exchanges above; calories are calculated from the meal entries.</p> -->
+      <div class="table-wrap">
+        <table class="meal-table" aria-label="Editable food exchanges by meal">
+          <thead id="meal-head"></thead>
+          <tbody id="meal-rows"></tbody>
+          <tfoot id="meal-foot"></tfoot>
+        </table>
+      </div>
+      <p id="meal-status" class="meal-status" aria-live="polite"></p>
+      <!-- <div class="actions">
+        <button id="reset-meal-plan" type="button">Reset to example plan</button>
+      </div> -->
+    </section>
+
+    <!-- <p class="note">Starting values are transcribed from the photo. Adjust each daily target and its allowed ± tolerance; totals outside the range are highlighted red.</p> -->
+  </main>
+
+  <script>
+    const mealNames = ["Breakfast", "AM Snack", "Lunch", "PM Snack", "Dinner"];
+    const exampleMealPlan = {
+      Vegetables: [1, 0, 0, 0, 1],
+      Fruits: [1, 0, 1, 1, 1],
+      Milk: [1, 0, 0, 0, 0],
+      Rice: [3, 0, 3, 0, 2.5],
+      Meat: [2, 0, 2, 0, 1],
+      Fat: [4, 0, 4, 0, 2],
+      Sugar: [1, 0, 0, 0, 0]
+    };
+    const foods = [
+      { name: "Vegetables", exchanges: 2, carbs: 3, protein: 1, fat: 0, calories: 16, mealValues: exampleMealPlan.Vegetables.slice() },
+      { name: "Fruits", exchanges: 3, carbs: 10, protein: 0, fat: 0, calories: 40, mealValues: exampleMealPlan.Fruits.slice() },
+      { name: "Milk", exchanges: 1, carbs: 12, protein: 8, fat: 10, calories: 170, mealValues: exampleMealPlan.Milk.slice() },
+      { name: "Rice", exchanges: 8.5, carbs: 23, protein: 2, fat: 0, calories: 100, mealValues: exampleMealPlan.Rice.slice() },
+      { name: "Meat", exchanges: 5, carbs: 0, protein: 8, fat: 6, calories: 86, mealValues: exampleMealPlan.Meat.slice() },
+      { name: "Fat", exchanges: 10, carbs: 0, protein: 0, fat: 5, calories: 45, mealValues: exampleMealPlan.Fat.slice() },
+      { name: "Sugar", exchanges: 1, carbs: 5, protein: 0, fat: 0, calories: 20, mealValues: exampleMealPlan.Sugar.slice() }
+    ];
+
+    const labels = {
+      name: "Food group",
+      exchanges: "Exchanges",
+      carbs: "Carbs per exchange in grams",
+      protein: "Protein per exchange in grams",
+      fat: "Fat per exchange in grams",
+      calories: "Calories per exchange"
+    };
+    const body = document.querySelector("#food-rows");
+    const mealHead = document.querySelector("#meal-head");
+    const mealBody = document.querySelector("#meal-rows");
+    const mealFoot = document.querySelector("#meal-foot");
+    const numberFormat = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
+    const storageKey = "food-exchange-calculator:v1";
+    let storageAvailable = true;
+
+    function format(value) {
+      return numberFormat.format(value);
+    }
+
+    function getSavedState() {
+      return {
+        version: 1,
+        foods: foods.map(({ name, exchanges, carbs, protein, fat, calories, mealValues }) => ({
+          name, exchanges, carbs, protein, fat, calories, mealValues
+        })),
+        targets: Object.fromEntries(
+          [...document.querySelectorAll("[data-target]")].map((input) => [input.dataset.target, Number(input.value)])
+        ),
+        tolerances: Object.fromEntries(
+          [...document.querySelectorAll("[data-tolerance]")].map((input) => [input.dataset.tolerance, Number(input.value)])
+        )
+      };
+    }
+
+    function setSaveStatus(message, isError = false) {
+      const status = document.querySelector("#save-status");
+      status.textContent = message;
+      status.classList.toggle("error", isError);
+    }
+
+    function saveState() {
+      if (!storageAvailable) return false;
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(getSavedState()));
+        setSaveStatus("Changes are saved in this browser.");
+        return true;
+      } catch (error) {
+        storageAvailable = false;
+        setSaveStatus(`Could not save to this browser: ${error.message}. Use Export data to keep a copy.`, true);
+        return false;
+      }
+    }
+
+    function validateState(state) {
+      if (!state || state.version !== 1 || !Array.isArray(state.foods) ||
+          !state.targets || !state.tolerances) {
+        throw new Error("This file is not a supported food exchange backup.");
+      }
+
+      const numericFields = ["exchanges", "carbs", "protein", "fat", "calories"];
+      const validatedFoods = state.foods.map((food) => {
+        if (!food || typeof food.name !== "string" ||
+            numericFields.some((field) => !Number.isFinite(food[field]) || food[field] < 0) ||
+            !Array.isArray(food.mealValues) || food.mealValues.length !== mealNames.length ||
+            food.mealValues.some((value) => !Number.isFinite(value) || value < 0)) {
+          throw new Error("The backup contains an invalid food group or meal amount.");
+        }
+        return {
+          name: food.name,
+          exchanges: food.exchanges,
+          carbs: food.carbs,
+          protein: food.protein,
+          fat: food.fat,
+          calories: food.calories,
+          mealValues: food.mealValues.slice()
+        };
+      });
+
+      for (const field of ["calories", "carbs", "protein", "fat"]) {
+        if (!Number.isFinite(state.targets[field]) || state.targets[field] < 0 ||
+            !Number.isFinite(state.tolerances[field]) || state.tolerances[field] < 0) {
+          throw new Error("The backup contains an invalid target or tolerance.");
+        }
+      }
+      return { foods: validatedFoods, targets: state.targets, tolerances: state.tolerances };
+    }
+
+    function applyState(state) {
+      foods.splice(0, foods.length, ...state.foods);
+      for (const [field, value] of Object.entries(state.targets)) {
+        document.querySelector(`[data-target="${field}"]`).value = value;
+      }
+      for (const [field, value] of Object.entries(state.tolerances)) {
+        document.querySelector(`[data-tolerance="${field}"]`).value = value;
+      }
+      renderMeals();
+      renderRows();
+    }
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(storageKey);
+        if (saved === null) {
+          setSaveStatus("Changes will be saved in this browser as you edit.");
+          return;
+        }
+        applyState(validateState(JSON.parse(saved)));
+        setSaveStatus("Saved data restored from this browser.");
+      } catch (error) {
+        setSaveStatus(`Could not restore saved data: ${error.message}. The default values are shown.`, true);
+      }
+    }
+
+    function makeInput(food, index, field) {
+      const input = document.createElement("input");
+      input.setAttribute("aria-label", `${food.name} ${labels[field]}`);
+      input.dataset.index = index;
+      input.dataset.field = field;
+      if (field === "name") {
+        input.type = "text";
+        input.className = "food-input";
+        input.value = food[field];
+      } else {
+        input.type = "number";
+        input.min = "0";
+        input.step = "any";
+        input.value = food[field];
+      }
+      return input;
+    }
+
+    function renderRows() {
+      body.replaceChildren();
+      foods.forEach((food, index) => {
+        const row = document.createElement("tr");
+        row.append(makeCell(makeInput(food, index, "name")));
+        row.append(makeCell(makeInput(food, index, "exchanges")));
+        row.append(makeCell(makeInput(food, index, "carbs")));
+        row.append(makeTotalCell(index, "carbs", "g"));
+        row.append(makeCell(makeInput(food, index, "protein")));
+        row.append(makeTotalCell(index, "protein", "g"));
+        row.append(makeCell(makeInput(food, index, "fat")));
+        row.append(makeTotalCell(index, "fat", "g"));
+        row.append(makeCell(makeInput(food, index, "calories")));
+        row.append(makeTotalCell(index, "calories", "kcal"));
+
+        const actionCell = document.createElement("td");
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.className = "remove";
+        removeButton.dataset.remove = index;
+        removeButton.setAttribute("aria-label", `Remove ${food.name}`);
+        removeButton.textContent = "Remove";
+        actionCell.append(removeButton);
+        row.append(actionCell);
+        body.append(row);
+      });
+      updateTotals();
+    }
+
+    function makeCell(content) {
+      const cell = document.createElement("td");
+      cell.append(content);
+      return cell;
+    }
+
+    function makeTotalCell(index, field, unit) {
+      const cell = document.createElement("td");
+      cell.className = "row-total";
+      cell.dataset.rowTotal = `${index}-${field}`;
+      cell.dataset.unit = unit;
+      return cell;
+    }
+
+    function getTotals() {
+      return foods.reduce((totals, food) => {
+        for (const field of ["carbs", "protein", "fat", "calories"]) {
+          totals[field] += food.exchanges * food[field];
+        }
+        return totals;
+      }, { carbs: 0, protein: 0, fat: 0, calories: 0 });
+    }
+
+    function renderMeals() {
+      const headerRow = document.createElement("tr");
+      ["Food group", ...mealNames, "Exchanges / day", "Calories / day"].forEach((label) => {
+        const cell = document.createElement("th");
+        cell.scope = "col";
+        cell.textContent = label;
+        headerRow.append(cell);
+      });
+      mealHead.replaceChildren(headerRow);
+      mealBody.replaceChildren();
+
+      foods.forEach((food, foodIndex) => {
+        if (!Array.isArray(food.mealValues)) food.mealValues = mealNames.map(() => 0);
+        const row = document.createElement("tr");
+        const nameCell = document.createElement("td");
+        nameCell.className = "meal-food-name";
+        nameCell.dataset.mealFoodName = foodIndex;
+        row.append(nameCell);
+
+        mealNames.forEach((mealName, mealIndex) => {
+          const cell = document.createElement("td");
+          const input = document.createElement("input");
+          input.type = "number";
+          input.min = "0";
+          input.step = "any";
+          input.value = food.mealValues[mealIndex];
+          input.dataset.foodIndex = foodIndex;
+          input.dataset.mealIndex = mealIndex;
+          input.setAttribute("aria-label", `${food.name} exchanges at ${mealName}`);
+          cell.append(input);
+          row.append(cell);
+        });
+
+        const exchangeTotal = document.createElement("td");
+        exchangeTotal.className = "meal-sum";
+        exchangeTotal.dataset.mealExchangeTotal = foodIndex;
+        row.append(exchangeTotal);
+        const calorieTotal = document.createElement("td");
+        calorieTotal.className = "meal-sum";
+        calorieTotal.dataset.mealCalorieTotal = foodIndex;
+        row.append(calorieTotal);
+        mealBody.append(row);
+      });
+
+      const exchangeRow = document.createElement("tr");
+      exchangeRow.dataset.mealExchangeRow = "";
+      const exchangeLabel = document.createElement("td");
+      exchangeLabel.colSpan = 1;
+      exchangeLabel.textContent = "Meal exchange totals";
+      exchangeRow.append(exchangeLabel);
+      mealNames.forEach((_, mealIndex) => {
+        const cell = document.createElement("td");
+        cell.className = "meal-sum";
+        cell.dataset.mealExchangeSum = mealIndex;
+        exchangeRow.append(cell);
+      });
+      const exchangeGrandTotal = document.createElement("td");
+      exchangeGrandTotal.className = "meal-sum";
+      exchangeGrandTotal.dataset.mealExchangeGrandTotal = "";
+      exchangeRow.append(exchangeGrandTotal);
+      const emptyCalorieCell = document.createElement("td");
+      exchangeRow.append(emptyCalorieCell);
+      mealFoot.replaceChildren(exchangeRow);
+
+      const calorieRow = document.createElement("tr");
+      const calorieLabel = document.createElement("td");
+      calorieLabel.textContent = "Meal calories";
+      calorieRow.append(calorieLabel);
+      mealNames.forEach((_, mealIndex) => {
+        const cell = document.createElement("td");
+        cell.className = "meal-calorie-total";
+        cell.dataset.mealCalories = mealIndex;
+        calorieRow.append(cell);
+      });
+      const emptyCaloriesCell = document.createElement("td");
+      calorieRow.append(emptyCaloriesCell);
+      const dailyCaloriesCell = document.createElement("td");
+      dailyCaloriesCell.className = "meal-calorie-total";
+      dailyCaloriesCell.dataset.mealDailyCalories = "";
+      calorieRow.append(dailyCaloriesCell);
+      mealFoot.append(calorieRow);
+      updateMealPlan();
+    }
+
+    function updateMealPlan() {
+      const mealExchangeTotals = mealNames.map(() => 0);
+      const mealCalories = mealNames.map(() => 0);
+      let totalPlannedExchanges = 0;
+      let totalPlannedCalories = 0;
+      let unmatchedFoods = 0;
+
+      foods.forEach((food, foodIndex) => {
+        const plannedExchanges = food.mealValues.reduce((sum, value) => sum + value, 0);
+        const plannedCalories = food.mealValues.reduce((sum, value) => sum + value * food.calories, 0);
+        totalPlannedExchanges += plannedExchanges;
+        totalPlannedCalories += plannedCalories;
+
+        const nameCell = mealBody.querySelector(`[data-meal-food-name="${foodIndex}"]`);
+        if (nameCell) nameCell.textContent = food.name;
+        const exchangeTotalCell = mealBody.querySelector(`[data-meal-exchange-total="${foodIndex}"]`);
+        const calorieTotalCell = mealBody.querySelector(`[data-meal-calorie-total="${foodIndex}"]`);
+        const matchesDaily = Math.abs(plannedExchanges - food.exchanges) < 0.01;
+        if (exchangeTotalCell) {
+          exchangeTotalCell.textContent = `${format(plannedExchanges)} / ${format(food.exchanges)}`;
+          exchangeTotalCell.classList.toggle("matches-daily", matchesDaily);
+          exchangeTotalCell.classList.toggle("differs-from-daily", !matchesDaily);
+        }
+        if (calorieTotalCell) calorieTotalCell.textContent = `${format(plannedCalories)} kcal`;
+        if (!matchesDaily) unmatchedFoods += 1;
+
+        food.mealValues.forEach((value, mealIndex) => {
+          mealExchangeTotals[mealIndex] += value;
+          mealCalories[mealIndex] += value * food.calories;
+        });
+      });
+
+      mealExchangeTotals.forEach((value, mealIndex) => {
+        const cell = mealFoot.querySelector(`[data-meal-exchange-sum="${mealIndex}"]`);
+        if (cell) cell.textContent = format(value);
+        const calorieCell = mealFoot.querySelector(`[data-meal-calories="${mealIndex}"]`);
+        if (calorieCell) calorieCell.textContent = `${format(mealCalories[mealIndex])} kcal`;
+      });
+
+      const plannedExchangeTotal = mealExchangeTotals.reduce((sum, value) => sum + value, 0);
+      const exchangeGrandTotal = mealFoot.querySelector("[data-meal-exchange-grand-total]");
+      if (exchangeGrandTotal) exchangeGrandTotal.textContent = format(plannedExchangeTotal);
+      const dailyCalories = mealFoot.querySelector("[data-meal-daily-calories]");
+      if (dailyCalories) dailyCalories.textContent = `${format(totalPlannedCalories)} kcal`;
+
+      const status = document.querySelector("#meal-status");
+      status.textContent = unmatchedFoods === 0
+        ? `All food-group meal amounts match the daily exchanges. Planned calories: ${format(totalPlannedCalories)} kcal.`
+        : `${unmatchedFoods} food group${unmatchedFoods === 1 ? "" : "s"} ${unmatchedFoods === 1 ? "does" : "do"} not match the daily exchanges above. Planned calories: ${format(totalPlannedCalories)} kcal.`;
+      status.classList.toggle("invalid", unmatchedFoods > 0);
+    }
+
+    function targetValue(field) {
+      const value = Number(document.querySelector(`[data-target="${field}"]`).value);
+      return Number.isFinite(value) && value >= 0 ? value : 0;
+    }
+
+    function toleranceValue(field) {
+      const value = Number(document.querySelector(`[data-tolerance="${field}"]`).value);
+      return Number.isFinite(value) && value >= 0 ? value : 0;
+    }
+
+    function setSummary(id, field, actual, target, unit) {
+      const tolerance = toleranceValue(field);
+      const difference = actual - target;
+      const sign = difference > 0 ? "+" : "";
+      const withinTolerance = Math.abs(difference) <= tolerance;
+      const output = document.querySelector(id);
+      const card = document.querySelector(`[data-summary="${field}"]`);
+      output.replaceChildren(
+        document.createTextNode(
+          `${format(actual)} ${unit} / ${format(target)} ${unit} target (${sign}${format(difference)} ${unit})`
+        )
+      );
+      const status = document.createElement("small");
+      status.textContent = withinTolerance
+        ? `Within ±${format(tolerance)} ${unit} tolerance`
+        : `Outside ±${format(tolerance)} ${unit} tolerance`;
+      output.append(status);
+      card.classList.toggle("within-tolerance", withinTolerance);
+      card.classList.toggle("outside-tolerance", !withinTolerance);
+      card.setAttribute("aria-label", withinTolerance ? "Target achieved within tolerance" : "Target outside tolerance");
+    }
+
+    function updateTotals() {
+      const totals = getTotals();
+      foods.forEach((food, index) => {
+        for (const field of ["carbs", "protein", "fat", "calories"]) {
+          const rowTotal = document.querySelector(`[data-row-total="${index}-${field}"]`);
+          if (rowTotal) {
+            rowTotal.textContent = `${format(food.exchanges * food[field])} ${rowTotal.dataset.unit}`;
+          }
+        }
+      });
+
+      document.querySelector("#total-carbs").textContent = `${format(totals.carbs)} g`;
+      document.querySelector("#total-protein").textContent = `${format(totals.protein)} g`;
+      document.querySelector("#total-fat").textContent = `${format(totals.fat)} g`;
+      document.querySelector("#total-calories").textContent = `${format(totals.calories)} kcal`;
+      setSummary("#calorie-summary", "calories", totals.calories, targetValue("calories"), "kcal");
+      setSummary("#carb-summary", "carbs", totals.carbs, targetValue("carbs"), "g");
+      setSummary("#protein-summary", "protein", totals.protein, targetValue("protein"), "g");
+      setSummary("#fat-summary", "fat", totals.fat, targetValue("fat"), "g");
+      updateMealPlan();
+    }
+
+    body.addEventListener("input", (event) => {
+      const input = event.target;
+      const index = Number(input.dataset.index);
+      const field = input.dataset.field;
+      if (!field || !Number.isInteger(index) || !foods[index]) return;
+
+      foods[index][field] = field === "name" ? input.value : Math.max(0, Number(input.value) || 0);
+      if (field === "name") input.setAttribute("aria-label", `${input.value} ${labels.name}`);
+      updateTotals();
+      saveState();
+    });
+
+    body.addEventListener("click", (event) => {
+      const index = Number(event.target.dataset.remove);
+      if (!Number.isInteger(index) || !foods[index]) return;
+      foods.splice(index, 1);
+      renderMeals();
+      renderRows();
+      saveState();
+    });
+
+    document.querySelector("#add-row").addEventListener("click", () => {
+      foods.push({
+        name: "New food",
+        exchanges: 0,
+        carbs: 0,
+        protein: 0,
+        fat: 0,
+        calories: 0,
+        mealValues: mealNames.map(() => 0)
+      });
+      renderMeals();
+      renderRows();
+      saveState();
+      const nameInput = body.querySelector(`input[data-index="${foods.length - 1}"][data-field="name"]`);
+      nameInput.focus();
+      nameInput.select();
+    });
+
+    document.querySelector(".targets").addEventListener("input", () => {
+      updateTotals();
+      saveState();
+    });
+    mealBody.addEventListener("input", (event) => {
+      const input = event.target;
+      const foodIndex = Number(input.dataset.foodIndex);
+      const mealIndex = Number(input.dataset.mealIndex);
+      if (!Number.isInteger(foodIndex) || !foods[foodIndex] ||
+          !Number.isInteger(mealIndex) || !mealNames[mealIndex]) return;
+
+      const value = Math.max(0, Number(input.value) || 0);
+      foods[foodIndex].mealValues[mealIndex] = value;
+      input.value = value;
+      updateMealPlan();
+      saveState();
+    });
+
+    // document.querySelector("#reset-meal-plan").addEventListener("click", () => {
+    //   foods.forEach((food) => {
+    //     food.mealValues = (exampleMealPlan[food.name] || mealNames.map(() => 0)).slice();
+    //   });
+    //   renderMeals();
+    //   saveState();
+    // });
+
+    document.querySelector("#export-data").addEventListener("click", () => {
+      try {
+        const backup = new Blob([JSON.stringify(getSavedState(), null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(backup);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "food-exchange-plan.json";
+        document.body.append(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        setSaveStatus("Backup exported as food-exchange-plan.json.");
+      } catch (error) {
+        setSaveStatus(`Could not export backup: ${error.message}`, true);
+      }
+    });
+
+    document.querySelector("#import-data").addEventListener("click", () => {
+      document.querySelector("#import-file").click();
+    });
+
+    document.querySelector("#import-file").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      try {
+        const state = validateState(JSON.parse(await file.text()));
+        applyState(state);
+        const saved = saveState();
+        if (saved) setSaveStatus("Backup imported successfully.");
+        else setSaveStatus("Backup imported for this session, but could not be saved in this browser.", true);
+      } catch (error) {
+        setSaveStatus(`Could not import backup: ${error.message}`, true);
+      } finally {
+        event.target.value = "";
+      }
+    });
+
+    loadState();
+    renderMeals();
+    renderRows();
+  </script>
 </body>
 </html>
