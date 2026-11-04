@@ -1,0 +1,1 @@
+[![pages-build-deployment](https://github.com/majordio/majordio.github.io/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/majordio/majordio.github.io/actions/workflows/pages/pages-build-deployment)
