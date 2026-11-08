@@ -1,0 +1,19 @@
+#EXTM3U
+#EXTINF:-1 tvg-name="Arirang K-pop" tvg-country="Korea" group-title="Music",Arirang K-pop
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=5468
+#EXTINF:-1 tvg-name="EBS+2" tvg-country="Korea" group-title="Education",EBS+2
+http://ebsonairios.ebs.co.kr/plus2tablet500k/tablet500k/plus2tablet500k.index.m3u8
+#EXTINF:-1 tvg-name="EBS2" tvg-country="Korea" group-title="Education",EBS2
+http://ebsonairios.ebs.co.kr/ebs2tablet500k/tablet500k/ebs2tablet500k.index.m3u8?
+#EXTINF:-1 tvg-name="CJ ENM" tvg-country="Korea" group-title="Entertainment",CJ ENM
+https://d3kmrn2mstrnk5.cloudfront.net/v1/manifest/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-7ppcp3lxg7oer/57f79b7c-3aac-40e3-a424-779160572f92/0.m3u8
+#EXTINF:-1 tvg-name="Korea TV" tvg-country="Korea" group-title="News & Information",Korea TV
+https://hlive.ktv.go.kr/live/klive_h.stream/playlist.m3u8
+#EXTINF:-1 tvg-name="NHK Global" tvg-country="Japan" group-title="News & Information",NHK Global
+https://media-tyo.hls.nhkworld.jp/hls/wp/live/master.m3u8
+#EXTINF:-1 tvg-name="NHK World" tvg-country="Japan" group-title="News & Information",NHK World
+https://media-tyo.hls.nhkworld.jp/hls/w/live/master.m3u8
+#EXTINF:-1 tvg-name="ショップチャンネル" tvg-country="Japan" group-title="Shopping",ショップチャンネル
+https://stream3.shopch.jp/httporiginlivech1/ch1.stream_1280p/chunklist.m3u8
+#EXTINF:-1 tvg-name="えふえむ・エヌ・ワン" tvg-country="Japan" group-title="Radio",えふえむ・エヌ・ワン
+https://hls-edge1.mitene.jp/fmn1/hls/live01.m3u8
