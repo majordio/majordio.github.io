@@ -1,93 +1,93 @@
 #EXTM3U
-#EXTINF:-1 tvg-name="TRACE Urban" group-title="Music",TRACE Urban
+#EXTINF:-1 tvg-name="TRACE Urban" tvg-logo="https://i.imgur.com/DLIbUMx.png" group-title="Music",TRACE Urban
 https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg01076-lightningintern-traceurban-samsungnz/playlist.m3u8
 #EXTINF:-1 tvg-name="Totalmusic 2000" group-title="Music",Totalmusic 2000
 https://cdn.global.elektamedia.com/live/c7eds/Totalmusic_00s/SA_LIVE_hls_enc/master.m3u8
-#EXTINF:-1 tvg-name="Totalmusic" group-title="Music",Totalmusic
+#EXTINF:-1 tvg-name="Totalmusic" tvg-logo="https://static.elektamedia.com/ch/tmc_main.png" group-title="Music",Totalmusic
 https://cdn.global.elektamedia.com/live/c7eds/Totalmusic/SA_LIVE_hls_enc/master.m3u8
-#EXTINF:-1 tvg-name="Deluxe Music" group-title="Music",Deluxe Music
+#EXTINF:-1 tvg-name="Deluxe Music" tvg-logo="https://i.imgur.com/HimuPPb.png" group-title="Music",Deluxe Music
 https://sdn-global-live-streaming-packager-cache.3qsdn.com/13456/13456_264_live.m3u8
-#EXTINF:-1 tvg-name="R101 SG" group-title="Music",R101 SG
+#EXTINF:-1 tvg-name="R101 SG" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/R101_-_Logo_2015.svg/500px-R101_-_Logo_2015.svg.png" group-title="Music",R101 SG
 https://live02-seg.msr.cdn.mediaset.net/live/ch-er/er-clr.isml/index.m3u8
-#EXTINF:-1 tvg-name="Oxygen Music" group-title="Music",Oxygen Music
+#EXTINF:-1 tvg-name="Oxygen Music" tvg-logo="https://oxygenmusic.hu/static/media/logo.png" group-title="Music",Oxygen Music
 https://oxygenmusic.hu:2443/hls/oxygenmusic.m3u8
-#EXTINF:-1 tvg-name="Number 1 Dance" group-title="Music",Number 1 Dance
+#EXTINF:-1 tvg-name="Number 1 Dance" tvg-logo="https://i.imgur.com/ZM4PSyq.png" group-title="Music",Number 1 Dance
 https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e2aa8acf44_1/playlist.m3u8
-#EXTINF:-1 tvg-id="TraceUK.uk@HD" tvg-logo="https://a.jsrdn.com/hls/23073/trace-uk/logo_20240627_183320_70.png" group-title="Music",Trace UK
+#EXTINF:-1 tvg-id="TraceUK.uk@HD" tvg-name="Trace UK" tvg-logo="https://a.jsrdn.com/hls/23073/trace-uk/logo_20240627_183320_70.png" group-title="Music",Trace UK
 https://channels.trace.plus/Traceprod/UK_FAST_hd/index.m3u8
-#EXTINF:-1 tvg-name="XITE DE" group-title="Music",XITE DE
+#EXTINF:-1 tvg-name="XITE DE" tvg-logo="https://i.imgur.com/jxuwGRi.png" group-title="Music",XITE DE
 https://xite-germany-lg.amagi.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="XITE Hits UK" group-title="Music",XITE Hits UK
+#EXTINF:-1 tvg-name="XITE Hits UK" tvg-logo="https://i.imgur.com/jxuwGRi.png" group-title="Music",XITE Hits UK
 https://xite-hitsuk-lg.amagi.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="Anime x Hidive" group-title="Anime",Anime x Hidive
+#EXTINF:-1 tvg-name="Anime x Hidive" tvg-logo="https://i.imgur.com/v0BlxCa.png" group-title="Anime",Anime x Hidive
 https://amc-anime-x-hidive-1-us.tablo.wurl.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="Fifth Gear" group-title="Automotive",Fifth Gear
+#EXTINF:-1 tvg-name="Fifth Gear" tvg-logo="https://i.imgur.com/AsB4op8.png" group-title="Automotive",Fifth Gear
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99951207
-#EXTINF:-1 tvg-name="Just For Laughs Gags" group-title="Comedy",Just For Laughs Gags
+#EXTINF:-1 tvg-name="Just For Laughs Gags" tvg-logo="https://i.imgur.com/HjVEVMJ.png" group-title="Comedy",Just For Laughs Gags
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991204
-#EXTINF:-1 tvg-name="BBC Earth" group-title="Documentary",BBC Earth
+#EXTINF:-1 tvg-name="BBC Earth" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/7/7e/BBC_Earth_2023.svg" group-title="Documentary",BBC Earth
 https://amg00793-bbcstudios-amg00793c3-lg-us-2528.playouts.now.amagi.tv/playlist/amg00793-bbcstudios-bbcearta-lgus/playlist.m3u8
-#EXTINF:-1 tvg-name="Autentic History" group-title="Documentary",Autentic History
+#EXTINF:-1 tvg-name="Autentic History" tvg-logo="https://i.imgur.com/fVyTIbZ.png" group-title="Documentary",Autentic History
 https://autentic-autentichistory-1-au.lg.wurl.tv/playlist.m3u8
 #EXTINF:-1 tvg-name="Family Feud" group-title="Entertainment",Family Feud
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991232
-#EXTINF:-1 tvg-name="Hollywire" group-title="Entertainment",Hollywire
+#EXTINF:-1 tvg-name="Hollywire" tvg-logo="https://i.imgur.com/oVNjFoj.png" group-title="Entertainment",Hollywire
 https://bozztv.com/hwotta/playlist/playlist.m3u8?checkedby:iptvcat.com
-#EXTINF:-1 tvg-name="Gusto TV" group-title="Food & Cooking",Gusto TV
+#EXTINF:-1 tvg-name="Gusto TV" tvg-logo="https://i.imgur.com/swUX3hQ.png" group-title="Food & Cooking",Gusto TV
 https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg01077-gustoworldwidem-gustotvnz-samsungnz/playlist.m3u8
-#EXTINF:-1 tvg-name="Cooking Channel" group-title="Food & Cooking",Cooking Channel
+#EXTINF:-1 tvg-name="Cooking Channel" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Cooking_Channel.svg/960px-Cooking_Channel.svg.png" group-title="Food & Cooking",Cooking Channel
 http://23.237.104.106:8080/USA_COOKING/index.m3u8
-#EXTINF:-1 tvg-name="Food Network" group-title="Food & Cooking",Food Network
+#EXTINF:-1 tvg-name="Food Network" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Food_Network_New_Logo.png/960px-Food_Network_New_Logo.png" group-title="Food & Cooking",Food Network
 http://23.237.104.106:8080/USA_FOOD_NETWORK/index.m3u8
 #EXTINF:-1 tvg-name="Hells Kitchen" group-title="Food & Cooking",Hells Kitchen
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991681
 #EXTINF:-1 tvg-name="XUMO Food" group-title="Food & Cooking",XUMO Food
 https://dbrb49pjoymg4.cloudfront.net/10001/9995117/hls/master.m3u8?ads.xumo_channelId=9995117
-#EXTINF:-1 tvg-name="Love Wine" group-title="Food & Drink",Love Wine
+#EXTINF:-1 tvg-name="Love Wine" tvg-logo="https://i.imgur.com/nWybhBz.png" group-title="Food & Drink",Love Wine
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01821-lovetvchannels-lovewineusuk-lggb/playlist.m3u8
-#EXTINF:-1 tvg-name="Tastemade" group-title="Food & Travel",Tastemade
+#EXTINF:-1 tvg-name="Tastemade" tvg-logo="https://i.imgur.com/xP7Ehn8.png" group-title="Food & Travel",Tastemade
 https://rakutenaa-tm-intl-aus-rakuten-eu-n1gtg.amagi.tv/playlist/rakutenAA-tm-intl-aus-rakuten-eu/playlist.m3u8
-#EXTINF:-1 tvg-name="Homeful" group-title="Lifestyle",Homeful
+#EXTINF:-1 tvg-name="Homeful" tvg-logo="https://www.homefultv.com/wp-content/uploads/2023/03/Homeful_Logo_MintWhite.png" group-title="Lifestyle",Homeful
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01446-blueantmediacan-homefulworldwide-lggb/playlist.m3u8
-#EXTINF:-1 tvg-name="Fashion TV" group-title="Lifestyle",Fashion TV
+#EXTINF:-1 tvg-name="Fashion TV" tvg-logo="https://i.imgur.com/Bk7W39G.png" group-title="Lifestyle",Fashion TV
 https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01546-ftv-fashiontv-xiaomi/playlist.m3u8
-#EXTINF:-1 tvg-name="Gravitas Movies" group-title="Movies",Gravitas Movies
+#EXTINF:-1 tvg-name="Gravitas Movies" tvg-logo="https://i.imgur.com/H2hD4vT.png" group-title="Movies",Gravitas Movies
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991312
-#EXTINF:-1 tvg-name="Sony Movies" group-title="Movies",Sony Movies
+#EXTINF:-1 tvg-name="Sony Movies" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Sony_Movies_Logo.svg/500px-Sony_Movies_Logo.svg.png" group-title="Movies",Sony Movies
 https://a-cdn.klowdtv.com/live1/smc_720p/playlist.m3u8
 #EXTINF:-1 tvg-name="Filmrise" group-title="Movies",Filmrise
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991337
 #EXTINF:-1 tvg-name="WE DO TV" group-title="Movies & Entertainment",WE DO TV
 https://movies4free-lg.amagi.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="Made in Hollywood" group-title="Movies & Entertainment",Made in Hollywood
+#EXTINF:-1 tvg-name="Made in Hollywood" tvg-logo="https://i.imgur.com/p16HNIM.png" group-title="Movies & Entertainment",Made in Hollywood
 https://connection3-ent-nz.samsung.wurl.tv/playlist.m3u8
 #EXTINF:-1 tvg-name="XUMO Nature" group-title="Nature & Outdoors",XUMO Nature
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99951218
 #EXTINF:-1 tvg-name="Outdoor Action" group-title="Nature & Outdoors",Outdoor Action
 https://careco-outdoor-action-1-eu.xiaomi.wurl.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="Outdoor Channel AU" group-title="Nature & Outdoors",Outdoor Channel AU
+#EXTINF:-1 tvg-name="Outdoor Channel AU" tvg-logo="https://i.imgur.com/Kh4MWaY.png" group-title="Nature & Outdoors",Outdoor Channel AU
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00718-outdoorchannela-outdoorchannel-lgau/playlist.m3u8
-#EXTINF:-1 tvg-name="Outdoor Channel" group-title="Nature & Outdoors",Outdoor Channel
+#EXTINF:-1 tvg-name="Outdoor Channel" tvg-logo="https://i.imgur.com/Kh4MWaY.png" group-title="Nature & Outdoors",Outdoor Channel
 https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg00718-outdoorchannela-outdoortvnz-samsungnz/playlist.m3u8
-#EXTINF:-1 tvg-name="Love Nature" group-title="Nature & Outdoors",Love Nature
+#EXTINF:-1 tvg-name="Love Nature" tvg-logo="https://tv.lovenature.com/wp-content/uploads/2024/10/LoveNature2024_Logo_full_colour-copy.png" group-title="Nature & Outdoors",Love Nature
 https://bamus-lovenature-lg.amagi.tv/playlist.m3u8
 #EXTINF:-1 tvg-name="BBC US" group-title="News",BBC US
 https://uni8rtmp.tulix.tv/cfntv/cfntv/playlist.m3u8
-#EXTINF:-1 tvg-name="CNN TV" group-title="News",CNN TV
+#EXTINF:-1 tvg-name="CNN TV" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/960px-CNN.svg.png" group-title="News",CNN TV
 https://turnerlive.warnermediacdn.com/hls/live/586495/cnngo/cnn_slate/VIDEO_0_3564000.m3u8
 #EXTINF:-1 tvg-name="Petclub TV" group-title="Pets",Petclub TV
 https://lightning-petclub-xiaomi.amagi.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="Love Pets" group-title="Pets",Love Pets
+#EXTINF:-1 tvg-name="Love Pets" tvg-logo="https://lovepetstv.com/wp-content/uploads/2022/12/LovePets_Logo_SecondaryColor.png" group-title="Pets",Love Pets
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01576-blueskyeenterta-lovepetsemea-lggb/playlist.m3u8
 #EXTINF:-1 tvg-name="AMC All Reality" group-title="Reality",AMC All Reality
 https://amc-absolutereality-1-us.lg.wurl.tv/playlist.m3u8
 #EXTINF:-1 tvg-name="XUMO Reality" group-title="Reality",XUMO Reality
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991364
-#EXTINF:-1 tvg-name="Fuel TV" group-title="Sports",Fuel TV
+#EXTINF:-1 tvg-name="Fuel TV" tvg-logo="https://i.imgur.com/I8mviBy.png" group-title="Sports",Fuel TV
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01074-fueltv-fueltvemeaes-lges/playlist.m3u8
 #EXTINF:-1 tvg-name="XUMO Travel" group-title="Travel",XUMO Travel
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991111
-#EXTINF:-1 tvg-name="Autentic Travel" group-title="Travel",Autentic Travel
+#EXTINF:-1 tvg-name="Autentic Travel" tvg-logo="https://i.imgur.com/g1V9OH3.png" group-title="Travel",Autentic Travel
 https://autentic-autentictravel-1-au.lg.wurl.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="Adventure Earth" group-title="Travel & Adventure",Adventure Earth
+#EXTINF:-1 tvg-name="Adventure Earth" tvg-logo="https://i.imgur.com/94Pq9Io.png" group-title="Travel & Adventure",Adventure Earth
 https://autentic-adventure-earth-1-gb.lg.wurl.tv/playlist.m3u8
