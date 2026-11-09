@@ -33,43 +33,43 @@ https://autentic-autentichistory-1-au.lg.wurl.tv/playlist.m3u8
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991232
 #EXTINF:-1 tvg-name="Hollywire" tvg-logo="https://i.imgur.com/oVNjFoj.png" group-title="Entertainment",Hollywire
 https://bozztv.com/hwotta/playlist/playlist.m3u8?checkedby:iptvcat.com
-#EXTINF:-1 tvg-name="Gusto TV" tvg-logo="https://i.imgur.com/swUX3hQ.png" group-title="Food & Cooking",Gusto TV
+#EXTINF:-1 tvg-name="Gusto TV" tvg-logo="https://i.imgur.com/swUX3hQ.png" group-title="Food",Gusto TV
 https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg01077-gustoworldwidem-gustotvnz-samsungnz/playlist.m3u8
-#EXTINF:-1 tvg-name="Cooking Channel" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Cooking_Channel.svg/960px-Cooking_Channel.svg.png" group-title="Food & Cooking",Cooking Channel
+#EXTINF:-1 tvg-name="Cooking Channel" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Cooking_Channel.svg/960px-Cooking_Channel.svg.png" group-title="Food",Cooking Channel
 http://23.237.104.106:8080/USA_COOKING/index.m3u8
-#EXTINF:-1 tvg-name="Food Network" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Food_Network_New_Logo.png/960px-Food_Network_New_Logo.png" group-title="Food & Cooking",Food Network
+#EXTINF:-1 tvg-name="Food Network" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Food_Network_New_Logo.png/960px-Food_Network_New_Logo.png" group-title="Food",Food Network
 http://23.237.104.106:8080/USA_FOOD_NETWORK/index.m3u8
-#EXTINF:-1 tvg-name="Hells Kitchen" group-title="Food & Cooking",Hells Kitchen
+#EXTINF:-1 tvg-name="Hells Kitchen" group-title="Food",Hells Kitchen
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991681
-#EXTINF:-1 tvg-name="XUMO Food" group-title="Food & Cooking",XUMO Food
+#EXTINF:-1 tvg-name="XUMO Food" group-title="Food",XUMO Food
 https://dbrb49pjoymg4.cloudfront.net/10001/9995117/hls/master.m3u8?ads.xumo_channelId=9995117
-#EXTINF:-1 tvg-name="Love Wine" tvg-logo="https://i.imgur.com/nWybhBz.png" group-title="Food & Drink",Love Wine
+#EXTINF:-1 tvg-name="Love Wine" tvg-logo="https://i.imgur.com/nWybhBz.png" group-title="Food",Love Wine
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01821-lovetvchannels-lovewineusuk-lggb/playlist.m3u8
-#EXTINF:-1 tvg-name="Tastemade" tvg-logo="https://i.imgur.com/xP7Ehn8.png" group-title="Food & Travel",Tastemade
+#EXTINF:-1 tvg-name="Tastemade" tvg-logo="https://i.imgur.com/xP7Ehn8.png" group-title="Food",Tastemade
 https://rakutenaa-tm-intl-aus-rakuten-eu-n1gtg.amagi.tv/playlist/rakutenAA-tm-intl-aus-rakuten-eu/playlist.m3u8
 #EXTINF:-1 tvg-name="Homeful" tvg-logo="https://www.homefultv.com/wp-content/uploads/2023/03/Homeful_Logo_MintWhite.png" group-title="Lifestyle",Homeful
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01446-blueantmediacan-homefulworldwide-lggb/playlist.m3u8
 #EXTINF:-1 tvg-name="Fashion TV" tvg-logo="https://i.imgur.com/Bk7W39G.png" group-title="Lifestyle",Fashion TV
 https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01546-ftv-fashiontv-xiaomi/playlist.m3u8
-#EXTINF:-1 tvg-name="Gravitas Movies" tvg-logo="https://i.imgur.com/H2hD4vT.png" group-title="Movies",Gravitas Movies
+#EXTINF:-1 tvg-name="Gravitas Movies" tvg-logo="https://i.imgur.com/H2hD4vT.png" group-title="Film",Gravitas Movies
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991312
-#EXTINF:-1 tvg-name="Sony Movies" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Sony_Movies_Logo.svg/500px-Sony_Movies_Logo.svg.png" group-title="Movies",Sony Movies
+#EXTINF:-1 tvg-name="Sony Movies" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Sony_Movies_Logo.svg/500px-Sony_Movies_Logo.svg.png" group-title="Film",Sony Movies
 https://a-cdn.klowdtv.com/live1/smc_720p/playlist.m3u8
-#EXTINF:-1 tvg-name="Filmrise" group-title="Movies",Filmrise
+#EXTINF:-1 tvg-name="Filmrise" group-title="Film",Filmrise
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991337
-#EXTINF:-1 tvg-name="WE DO TV" group-title="Movies & Entertainment",WE DO TV
+#EXTINF:-1 tvg-name="WE DO TV" group-title="Film",WE DO TV
 https://movies4free-lg.amagi.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="Made in Hollywood" tvg-logo="https://i.imgur.com/p16HNIM.png" group-title="Movies & Entertainment",Made in Hollywood
+#EXTINF:-1 tvg-name="Made in Hollywood" tvg-logo="https://i.imgur.com/p16HNIM.png" group-title="Film",Made in Hollywood
 https://connection3-ent-nz.samsung.wurl.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="XUMO Nature" group-title="Nature & Outdoors",XUMO Nature
+#EXTINF:-1 tvg-name="XUMO Nature" group-title="Nature",XUMO Nature
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99951218
-#EXTINF:-1 tvg-name="Outdoor Action" group-title="Nature & Outdoors",Outdoor Action
+#EXTINF:-1 tvg-name="Outdoor Action" group-title="Nature",Outdoor Action
 https://careco-outdoor-action-1-eu.xiaomi.wurl.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="Outdoor Channel AU" tvg-logo="https://i.imgur.com/Kh4MWaY.png" group-title="Nature & Outdoors",Outdoor Channel AU
+#EXTINF:-1 tvg-name="Outdoor Channel AU" tvg-logo="https://i.imgur.com/Kh4MWaY.png" group-title="Nature",Outdoor Channel AU
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00718-outdoorchannela-outdoorchannel-lgau/playlist.m3u8
-#EXTINF:-1 tvg-name="Outdoor Channel" tvg-logo="https://i.imgur.com/Kh4MWaY.png" group-title="Nature & Outdoors",Outdoor Channel
+#EXTINF:-1 tvg-name="Outdoor Channel" tvg-logo="https://i.imgur.com/Kh4MWaY.png" group-title="Nature",Outdoor Channel
 https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg00718-outdoorchannela-outdoortvnz-samsungnz/playlist.m3u8
-#EXTINF:-1 tvg-name="Love Nature" tvg-logo="https://tv.lovenature.com/wp-content/uploads/2024/10/LoveNature2024_Logo_full_colour-copy.png" group-title="Nature & Outdoors",Love Nature
+#EXTINF:-1 tvg-name="Love Nature" tvg-logo="https://tv.lovenature.com/wp-content/uploads/2024/10/LoveNature2024_Logo_full_colour-copy.png" group-title="Nature",Love Nature
 https://bamus-lovenature-lg.amagi.tv/playlist.m3u8
 #EXTINF:-1 tvg-name="BBC US" group-title="News",BBC US
 https://uni8rtmp.tulix.tv/cfntv/cfntv/playlist.m3u8
@@ -89,5 +89,23 @@ https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01074-fueltv-fueltvemeaes-lges/play
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991111
 #EXTINF:-1 tvg-name="Autentic Travel" tvg-logo="https://i.imgur.com/g1V9OH3.png" group-title="Travel",Autentic Travel
 https://autentic-autentictravel-1-au.lg.wurl.tv/playlist.m3u8
-#EXTINF:-1 tvg-name="Adventure Earth" tvg-logo="https://i.imgur.com/94Pq9Io.png" group-title="Travel & Adventure",Adventure Earth
+#EXTINF:-1 tvg-name="Adventure Earth" tvg-logo="https://i.imgur.com/94Pq9Io.png" group-title="Travel",Adventure Earth
 https://autentic-adventure-earth-1-gb.lg.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-name="Arirang K-pop" tvg-country="Korea" tvg-logo="https://i.imgur.com/kk2MdNC.png" group-title="Korea",Arirang K-pop
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=5468
+#EXTINF:-1 tvg-name="EBS+2" tvg-country="Korea" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/EBS_2TV_Logo.svg/960px-EBS_2TV_Logo.svg.png" group-title="Korea",EBS+2
+http://ebsonairios.ebs.co.kr/plus2tablet500k/tablet500k/plus2tablet500k.index.m3u8
+#EXTINF:-1 tvg-name="EBS2" tvg-country="Korea" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/EBS_2TV_Logo.svg/960px-EBS_2TV_Logo.svg.png" group-title="Korea",EBS2
+http://ebsonairios.ebs.co.kr/ebs2tablet500k/tablet500k/ebs2tablet500k.index.m3u8?
+#EXTINF:-1 tvg-name="CJ ENM" tvg-country="Korea" tvg-logo="https://web2-cf-image.cjenm.com/public/share/systemmng/site/headermng/cj_enm_logo.svg" group-title="Korea",CJ ENM
+https://d3kmrn2mstrnk5.cloudfront.net/v1/manifest/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-7ppcp3lxg7oer/57f79b7c-3aac-40e3-a424-779160572f92/0.m3u8
+#EXTINF:-1 tvg-name="Korea TV" tvg-country="Korea" tvg-logo="https://i.ibb.co/WkrLDJW/Screenshot-20230714-135036-removebg-preview.png" group-title="Korea",Korea TV
+https://hlive.ktv.go.kr/live/klive_h.stream/playlist.m3u8
+#EXTINF:-1 tvg-name="NHK Global" tvg-country="Japan" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/NHK_World-Japan_TV.svg/960px-NHK_World-Japan_TV.svg.png" group-title="Japan",NHK Global
+https://media-tyo.hls.nhkworld.jp/hls/wp/live/master.m3u8
+#EXTINF:-1 tvg-name="NHK World" tvg-country="Japan" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/NHK_World-Japan_TV.svg/960px-NHK_World-Japan_TV.svg.png" group-title="Japan",NHK World
+https://media-tyo.hls.nhkworld.jp/hls/w/live/master.m3u8
+#EXTINF:-1 tvg-name="ショップチャンネル" tvg-country="Japan" tvg-logo="https://www.shopch.jp/com/images/common/logo_2021.png" group-title="Japan",ショップチャンネル
+https://stream3.shopch.jp/httporiginlivech1/ch1.stream_1280p/chunklist.m3u8
+#EXTINF:-1 tvg-name="えふえむ・エヌ・ワン" tvg-country="Japan" tvg-logo="https://www.fmn1.jp/wp-content/themes/fmn12024/icon/apple-touch-icon.png" group-title="Japan",えふえむ・エヌ・ワン
+https://hls-edge1.mitene.jp/fmn1/hls/live01.m3u8
