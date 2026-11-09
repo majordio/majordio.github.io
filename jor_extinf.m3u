@@ -47,9 +47,9 @@ https://dbrb49pjoymg4.cloudfront.net/10001/9995117/hls/master.m3u8?ads.xumo_chan
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01821-lovetvchannels-lovewineusuk-lggb/playlist.m3u8
 #EXTINF:-1 tvg-name="Tastemade" tvg-logo="https://i.imgur.com/xP7Ehn8.png" group-title="Entertainment",Tastemade
 https://rakutenaa-tm-intl-aus-rakuten-eu-n1gtg.amagi.tv/playlist/rakutenAA-tm-intl-aus-rakuten-eu/playlist.m3u8
-#EXTINF:-1 tvg-name="Homeful" tvg-logo="https://www.homefultv.com/wp-content/uploads/2023/03/Homeful_Logo_MintWhite.png" group-title="Lifestyle",Homeful
+#EXTINF:-1 tvg-name="Homeful" tvg-logo="https://www.homefultv.com/wp-content/uploads/2023/03/Homeful_Logo_MintWhite.png" group-title="Explore",Homeful
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01446-blueantmediacan-homefulworldwide-lggb/playlist.m3u8
-#EXTINF:-1 tvg-name="Fashion TV" tvg-logo="https://i.imgur.com/Bk7W39G.png" group-title="Lifestyle",Fashion TV
+#EXTINF:-1 tvg-name="Fashion TV" tvg-logo="https://i.imgur.com/Bk7W39G.png" group-title="Explore",Fashion TV
 https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01546-ftv-fashiontv-xiaomi/playlist.m3u8
 #EXTINF:-1 tvg-name="Gravitas Movies" tvg-logo="https://i.imgur.com/H2hD4vT.png" group-title="Film",Gravitas Movies
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991312
@@ -153,3 +153,54 @@ https://d4ybyqrhce41r.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae04
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01438-ewscrippscompan-scrippsnews-tablo/playlist.m3u8
 #EXTINF:-1 tvg-name="XUMO New K" group-title="Film",XUMO New K
 https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991386
+
+#EXTINF:-1 tvg-name="Bon Appetit" tvg-logo="https://i.imgur.com/YhFFxlE.png" group-title="Entertainment",Bon Appetit
+https://bonappetit-samsung.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-name="Cooking Panda" tvg-logo="https://i.imgur.com/bhY0Zcs.png" group-title="Entertainment",Cooking Panda
+https://stream-us-east-1.getpublica.com/playlist.m3u8?network_id=46
+#EXTINF:-1 tvg-name="Animal Planet" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/2018_Animal_Planet_logo.svg/960px-2018_Animal_Planet_logo.svg.png" group-title="Explore",Animal Planet
+http://23.237.104.106:8080/USA_ANIMAL_PLANET/index.m3u8
+#EXTINF:-1 tvg-name="AsianCrush" tvg-logo="https://i.imgur.com/hW6z1RG.png" group-title="Film",AsianCrush
+https://linear-900.frequency.stream/dist/cineverse/900/hls/master/playlist.m3u8
+#EXTINF:-1 tvg-name="Bark TV" tvg-logo="https://images.squarespace-cdn.com/content/v1/6a233007201fda6808a47ff9/f4f45cba-d340-4963-860a-37edaf91bc7f/BarkTV_Horizontal_Color.png" group-title="Explore",Bark TV
+https://bbb-barkt-streamstak.otteravision.com/bbb/barkt/barkt.m3u8
+#EXTINF:-1 tvg-name="NBA TV" tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/d/d2/NBA_TV.svg/960px-NBA_TV.svg.png" group-title="Sports",NBA TV
+http://23.237.104.106:8080/USA_NBA/index.m3u8
+#EXTINF:-1 tvg-name="CBS Sports" tvg-logo="https://i.imgur.com/A8CnA8g.png" group-title="Sports",CBS Sports
+https://jmp2.uk/plu-5e9f2c05172a0f0007db4786.m3u8
+#EXTINF:-1 tvg-name="Fox Sports 1" tvg-logo="https://i.imgur.com/O9BapV9.png" group-title="Sports",Fox Sports 1
+http://85.237.89.160:9590/usa-s/FOX-SPORTS-1/index.m3u8
+#EXTINF:-1 tvg-name="Disney Channel" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/3/3d/2022_Disney_Channel_logo.svg" group-title="Entertainment",Disney Channel
+http://4.30.180.36:8420/disneychannel/index.m3u8?token=test
+#EXTINF:-1 tvg-name="Disney XD" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/a/a8/2015_Disney_XD_logo.svg" group-title="Entertainment",Disney XD
+http://89.187.179.148:826/1368/gXwiagaXda/1672
+#EXTINF:-1 tvg-name="Boomerang" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Boomerang_2014_logo.svg/960px-Boomerang_2014_logo.svg.png" group-title="Entertainment",Boomerang
+http://23.237.104.106:8080/USA_BOOMERANG/index.m3u8
+#EXTINF:-1 tvg-name="Discovery Turbo" tvg-logo="https://i.imgur.com/osCVMop.png" group-title="Explore",Discovery Turbo
+http://41.205.93.154/ESPNNEWS/index.m3u8
+#EXTINF:-1 tvg-name="XITE 90s" group-title="Music",XITE 90s
+https://d284aawtm5vi48.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-fjdfi2br1jtq7/XITE_90s_Throwback.m3u8
+#EXTINF:-1 tvg-name="XITE Just Chill" tvg-logo="https://provider-static.plex.tv/epg/cms/production/927dd614-017d-49dd-9eb9-0ed79d09084e/xitejustchill_logo_light_-_Arlette_FiranRDX.png" group-title="Music",XITE Just Chill
+https://dvnftgdlbnemm.cloudfront.net/XITE_Just_Chill.m3u8
+#EXTINF:-1 tvg-name="XITE Nuevo Latino" tvg-logo="https://i.imgur.com/2qyl2y3.png" group-title="Music",XITE Nuevo Latino
+https://d3bsgqzbpkrvbb.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-w288eaw03izg1/XITE_Nuevo_Latino.m3u8
+#EXTINF:-1 tvg-name="XITE Rock On" group-title="Music",XITE Rock On
+https://d198ro05q94rc4.cloudfront.net/XITE_Rock_On.m3u8
+#EXTINF:-1 tvg-name="We TV" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Wetv-july-2024-logo.svg/3840px-Wetv-july-2024-logo.svg.png" group-title="Entertainment",We TV
+http://23.237.104.106:8080/USA_WE_TV/index.m3u8
+#EXTINF:-1 tvg-name="Vevo Latino" tvg-logo="https://i.imgur.com/D7SwmuB.png" group-title="Music",Vevo Latino
+https://amg00056-amg00056c13-rakuten-es-3246.playouts.now.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-name="Showtime Family" tvg-logo="https://i.imgur.com/qwJUawJ.png" group-title="Film",Showtime Family
+http://23.237.104.106:8080/USA_SHOWTIME_FAMILY/index.m3u8
+#EXTINF:-1 tvg-name="Red Bull TV" tvg-logo="https://i.postimg.cc/8c78JM28/image.png" group-title="Sports",Red Bull TV
+https://0b73ace69ebb45eaa249bb87837cb958.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-644-WORBUSENFAST-LG_US/644/lgtv/hls/master/playlist.m3u8
+#EXTINF:-1 tvg-name="Nicktoons" tvg-logo="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Nicktoons_Logo_2023.svg/1920px-Nicktoons_Logo_2023.svg.png" group-title="Entertainment",Nicktoons
+http://41.205.93.154/NICKTOONS/index.m3u8
+#EXTINF:-1 tvg-name="MTV Biggest Pop" tvg-logo="https://i.imgur.com/AOaZmlS.png" group-title="Music",MTV Biggest Pop
+https://jmp2.uk/plu-5d14fd1a252d35decbc4080c.m3u8
+#EXTINF:-1 tvg-name="MTV Spankin New" group-title="Music",MTV Spankin New
+https://jmp2.uk/plu-5d14fdb8ca91eedee1633117.m3u8
+#EXTINF:-1 tvg-name="MTV Live" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/3/30/MTV_Live_2021_logo.svg" group-title="Music",MTV Live
+http://23.237.104.106:8080/USA_MTV_LIVE/index.m3u8
+#EXTINF:-1 tvg-name="MTV Flow Latino" tvg-logo="https://images.pluto.tv/channels/62b218fc511d4b00070ddc0c/colorLogoPNG.png" group-title="Music",MTV Flow Latino
+https://jmp2.uk/plu-5d3609cd6a6c78d7672f2a81.m3u8
